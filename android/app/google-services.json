@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "592688152451",
+    "firebase_url": "https://prime-basket-app-default-rtdb.firebaseio.com",
+    "project_id": "prime-basket-app",
+    "storage_bucket": "prime-basket-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592688152451:android:20e2b720fb3cd6908040b6",
+        "android_client_info": {
+          "package_name": "com.example.prime_basket_app_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592688152451-ch0r0grifl5134kj764kic41or0u41mh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prime_basket_app_1",
+            "certificate_hash": "14edde4b884f637cc5da64ad578f198e651272f8"
+          }
+        },
+        {
+          "client_id": "592688152451-p83p24tiuom5s5kaelr5tauqjnjc8cpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDyZSsq2eQw0Dyi12XRdruh0IxZQvZVG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592688152451-p83p24tiuom5s5kaelr5tauqjnjc8cpe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "592688152451-v53d3jd6ktoueuc76s8ro6ji8ch8fuaj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.primeBasketApp1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592688152451:android:a79ea09fbe0308f88040b6",
+        "android_client_info": {
+          "package_name": "com.example.primebasket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592688152451-vk1h5b3uqfn5t49lre19ku3itl2c017a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.primebasket",
+            "certificate_hash": "024d1e91af32c793ce502cf0b0b25c53d4933379"
+          }
+        },
+        {
+          "client_id": "592688152451-p83p24tiuom5s5kaelr5tauqjnjc8cpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDyZSsq2eQw0Dyi12XRdruh0IxZQvZVG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592688152451-p83p24tiuom5s5kaelr5tauqjnjc8cpe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "592688152451-v53d3jd6ktoueuc76s8ro6ji8ch8fuaj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.primeBasketApp1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592688152451:android:0b7ca60bfbf39b448040b6",
+        "android_client_info": {
+          "package_name": "com.example.primebasketapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592688152451-p83p24tiuom5s5kaelr5tauqjnjc8cpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDyZSsq2eQw0Dyi12XRdruh0IxZQvZVG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592688152451-p83p24tiuom5s5kaelr5tauqjnjc8cpe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "592688152451-v53d3jd6ktoueuc76s8ro6ji8ch8fuaj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.primeBasketApp1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
