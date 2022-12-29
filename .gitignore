@@ -42,13 +42,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-# content of .gitignore
-*.iml
-.gradle
-/local.properties
-/.idea/*
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
