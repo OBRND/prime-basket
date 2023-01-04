@@ -1,10 +1,13 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:primebasket/Models/notificationModel.dart';
 import 'package:primebasket/Models/orderModel.dart';
+import 'package:primebasket/Models/withdrawalhistory.dart';
 
 import '../Models/productModel.dart';
+import '../Models/withdrawalModel.dart';
 
 class DatabaseService{
 
@@ -16,6 +19,81 @@ class DatabaseService{
   final CollectionReference products = FirebaseFirestore.instance.collection('products');
   final CollectionReference orderscollection = FirebaseFirestore.instance.collection('orders');
   final CollectionReference notification = FirebaseFirestore.instance.collection('notifications');
+  final CollectionReference Txn = FirebaseFirestore.instance.collection('TXN');
+  final CollectionReference Withdrawals = FirebaseFirestore.instance.collection('withdrawals');
+
+
+  Future withdraw(withdrawModel withdrawal) async{
+    String withdrawalID = generateorderId();
+    return await Withdrawals.doc(withdrawalID).set({
+      'account' : withdrawal.account,
+      'amount': withdrawal.amount,
+      'bank': withdrawal.bank,
+      'country': withdrawal.country,
+      'email': withdrawal.email,
+      'status': withdrawal.status,
+      'time': withdrawal.time,
+      'uid': uid,
+
+    });
+  }
+
+  Future getsharecount() async{
+    DocumentSnapshot User = await users
+        .doc('$uid').get();
+   String count = await User['shareCount'];
+   return count;
+  }
+
+  Future getwithdrawalhistory() async{
+    List history = [];
+    List banks = [];
+    List status = [];
+    List dates = [];
+    List sorted = [];
+    QuerySnapshot querySnapshot = await Withdrawals.get();
+    print(querySnapshot);
+    var allwithdrawals = await querySnapshot.docs;
+    for(int i=0; i < allwithdrawals.length; i++){
+      print('${allwithdrawals[i]['amount']}');
+      print('|||||||||||||||||||');
+      if(allwithdrawals[i]['uid'] == uid){
+        print('----------------');
+        dates.add('${allwithdrawals[i]['time']} $i');
+        // index.add(i:'gf');
+    dates.sort((a,b) => a.compareTo(b));
+      }
+      }
+    for(int i = 0; i < dates.length; i++){
+      print(dates);
+      sorted.add(allwithdrawals[int.parse(dates[i].substring(dates[i].length-2, dates[i].length))]['amount']);
+      status.add(allwithdrawals[int.parse(dates[i].substring(dates[i].length-2, dates[i].length))]['status']);
+      // banks.add(allwithdrawals[int.parse(dates[i].substring(dates[i].length-2, dates[i].length))]['bank']);
+      print('|||||||||$sorted');
+      print(status);
+      print(banks);
+    }
+    for(int i = 0; i < dates.length; i++) {
+      history.add(withdrawalhistory(amount: sorted[i], time: dates[i].substring(0 ,dates[i].length-2),
+        status: status[i] ));
+    }
+
+      // k.addEntries['${dates[0]}'];
+
+
+    return history;
+  }
+
+  Future gettransactionHash() async{
+    List Txns = [];
+    await Txn.get().then((QuerySnapshot snapshot) {
+      snapshot.docs.forEach((DocumentSnapshot doc) {
+        Txns.add(doc.id);
+      });
+    });
+    print(Txns);
+    return Txns;
+  }
 
   Future makeorder(int qty,double earnings, String email, String pid, String pname, String status, double total, String uid ) async{
      String orderID = generateorderId();
@@ -95,15 +173,166 @@ class DatabaseService{
 
   Future getnotifications() async{
     List notifications = [];
+    List Notifications = [];
+    List formatteddates = [];
+    List time = [];
     QuerySnapshot querySnapshot = await notification.get();
     final allnotifications = querySnapshot.docs;
     print(allnotifications);
     for(int i=0; i < allnotifications.length; i++) {
-      notifications.add(notificationModel(date: allnotifications[i]['date'],
-          text: allnotifications[i]['text'],
-          time: allnotifications[i]['time']));
+      Notifications.add('${allnotifications[i]['date']}');
+      time.add(allnotifications[i]['time']);
+      // notifications.add(notificationModel(date: allnotifications[i]['date'],
+      //     text: allnotifications[i]['text'],
+      //     time: allnotifications[i]['time']));
     }
+    formatteddates = Sortdatesnatif(Notifications, time);
+    for(int i=0; i < allnotifications.length; i++) {
+      notifications.add(notificationModel(dateliteral: formatteddates[i],
+          text: allnotifications[i]['text'],
+          time: allnotifications[i]['time'],
+          date: allnotifications[i]['date']));
+    }
+    // Notifications.sort((a, b){ //sorting in ascending order
+    //   return a.compareTo(b);
+    // });
+    notifications.sort((a, b){ //sorting in ascending order
+      return b.dateliteral.compareTo(a.dateliteral);
+    });
+    print('------------$notifications-------------');
+    print(Notifications);
+    print(DateTime.parse('2022-01-03 08:15'));
     return notifications;
+  }
+
+  Sortdatesnatif(List Notifications, List time) {
+    List converteddate = [];
+    String spacer = '';
+    for (int i = 0; i < Notifications.length; i++) {
+      String checker = Notifications[i].toString().substring(0, 3);
+      print('Coconutssssssssss');
+      print(time);
+      print(checker);
+      if(checker == 'Jan'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' ') {
+          spacer = '0${Notifications[i].substring(
+              Notifications[i].length - 7, Notifications[i].length - 6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-01-$spacer');
+        }else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-01-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }}else if(checker == 'Feb'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-02-$spacer');
+        }else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-02-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }}else if(checker == 'Mar'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-03-$spacer');
+
+        }else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-03-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }}else if(checker == 'Apr'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-04-$spacer');
+        }else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-04-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }}else if(checker == 'May'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-05-$spacer');
+        }else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-05-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }}else if(checker == 'Jun'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-07-$spacer');
+        } else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-06-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }}else if(checker == 'Jul'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-07-$spacer');
+        }else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-07-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }}else if(checker == 'Aug'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-08-$spacer');
+        }else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-08-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }}else if(checker == 'Sep'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-09-$spacer');
+        }
+        converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-09-${Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-6)}');
+      }else if(checker == 'Oct') {
+        if (Notifications[i].substring(
+            Notifications[i].length - 8, Notifications[i].length - 7) == ' ') {
+          spacer = '0${Notifications[i].substring(Notifications[i].length - 7,
+              Notifications[i].length - 6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-10-$spacer');
+        }
+        converteddate.add('${Notifications[i].toString().substring(
+            Notifications[i].length - 4,
+            Notifications[i].length)}-10-${Notifications[i].substring(
+            Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+      }else if(checker == 'Nov'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-11-$spacer');
+        }else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-11-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }}else if(checker == 'Dec'){
+        if(Notifications[i].substring(Notifications[i].length-8, Notifications[i].length-7) == ' '){
+          spacer = '0${Notifications[i].substring(Notifications[i].length-7, Notifications[i].length-6)} ${time[i]}';
+          converteddate.add('${Notifications[i].toString().substring(Notifications[i].length-4, Notifications[i].length)}-12-$spacer');
+        }else {
+          converteddate.add('${Notifications[i].toString().substring(
+              Notifications[i].length - 4,
+              Notifications[i].length)}-12-${Notifications[i].substring(
+              Notifications[i].length - 8, Notifications[i].length - 6)} ${time[i]}');
+        }
+      } else{
+        return [];
+      }
+      print(converteddate);
+    }
+    return converteddate;
   }
 
   Future getuserInfo() async{
@@ -112,7 +341,7 @@ class DatabaseService{
     DocumentSnapshot User = await users
         .doc('$uid').get();
     var virtual = User['virtualBalance'];
-    var actualBalance = User['actualBalance'];
+    var actualBalance = User['actualBalance'].toString();
     var estEarnings = User['estimatedEarnings'];
     var tier = User['tier'];
 

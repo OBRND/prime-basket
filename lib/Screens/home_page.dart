@@ -1,18 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:primebasket/Screens/Contact%20us.dart';
+import 'package:primebasket/Screens/FAQ.dart';
+import 'package:primebasket/Screens/Withdrawpages/Withdrawpage.dart';
+import 'package:primebasket/Screens/change_password.dart';
 import 'package:primebasket/Screens/login_page.dart';
-import 'package:primebasket/Screens/order_fulfullment_page.dart';
-import 'package:primebasket/Screens/top_up_page.dart';
-import 'package:primebasket/Screens/withrawal_deposit.dart';
+import 'package:primebasket/Screens/order_fulfullment_history.dart';
+import 'package:primebasket/Screens/Topuppages/top_up_page.dart';
+import 'package:primebasket/Screens/share_page.dart';
+import 'package:primebasket/Screens/tierpage.dart';
+import 'package:primebasket/Screens/withrawal_history.dart';
 import 'package:primebasket/Services/Database.dart';
 import 'package:primebasket/Services/User.dart';
-import 'package:primebasket/Widget/bottom_tab.dart';
 import 'package:primebasket/Widget/animated_text.dart';
 import 'package:primebasket/Widget/app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../Services/Auth.dart';
+import 'p2p_page.dart';
 
 class HomePage extends StatelessWidget {
   // const HomePage({Key? key}) : super(key: key);
@@ -22,6 +28,7 @@ class HomePage extends StatelessWidget {
   Future userInfo(context) async{
     final user = Provider.of<UserFB?>(context);
     List details = await DatabaseService(uid: user!.uid).getuserInfo();
+    print('||||||||||||||||||$details|||||||||||||||||||');
     accountdata = details;
     return details;
   }
@@ -282,7 +289,7 @@ class HomePage extends StatelessWidget {
                                   children: [
                                     Text("Est Earnings",
                                       style: TextStyle(color: Colors.white, fontSize: size.width*0.06, fontWeight: FontWeight.w200),),
-                                    Text("\$ ${accountdata[2].substring(0, 5)}", style: TextStyle(
+                                    Text("\$ ${accountdata[2].substring(0, 3)}", style: TextStyle(
                                         color: Colors.white,fontSize: size.width*0.06, fontWeight: FontWeight.w300),)
                                   ],
                                 ),
@@ -368,7 +375,9 @@ class HomePage extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     onPressed: (){
-                      Navigator.pushNamed(context, '/Withdraw');
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Withdrawalpage()));
+
                     },
                     style: ButtonStyle(
                         padding: MaterialStateProperty.all(EdgeInsets.fromLTRB(30,5,30,5)),
@@ -410,7 +419,9 @@ class HomePage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(15.0),
                                       ),
                                 backgroundColor: Color(0x38344381)),
-                          onPressed: (){Navigator.pushNamed(context, '/p2p');
+                          onPressed: (){
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => P2pTadingPage()));
                           },
                           child: Text('P2P trading',
                               style: TextStyle(fontSize: 18, color: Colors.white70))),
@@ -431,7 +442,8 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: ElevatedButton(onPressed: (){
-                        Navigator.pushNamed(context, '/share');
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SharePage()));
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
@@ -481,7 +493,8 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: ElevatedButton(onPressed: (){
-                        Navigator.pushNamed(context, '/withdrawal');
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => WithdrawalhistoryPage()));
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
@@ -512,6 +525,8 @@ class HomePage extends StatelessWidget {
                           ),
                               backgroundColor: Colors.transparent),
                           onPressed: (){
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Tierpage()));
                           },
                           child: Text('Tier system',
                               style: TextStyle(fontSize: 16, color: Colors.white70))),
@@ -532,7 +547,8 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: ElevatedButton(onPressed: (){
-
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => FAQ()));
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
@@ -556,6 +572,8 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: ElevatedButton(onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => changePassword()));
 
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
@@ -580,6 +598,8 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: ElevatedButton(onPressed: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => contactUs()));
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),

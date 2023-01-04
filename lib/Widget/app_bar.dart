@@ -39,7 +39,7 @@ class AppBarWidget extends StatelessWidget {
                 textStyle: TextStyle(color: Color(0xff353536), fontSize: 28, fontWeight: FontWeight.w700 ),)),
 
          IconButton(onPressed: (){
-           Navigator.of(context).pushReplacement(MaterialPageRoute(
+           Navigator.of(context).push(MaterialPageRoute(
                    builder: (context) => NotifPage()));
          },
           icon: Icon(Icons.notifications_active, color: Color(0xff3f3f41),),

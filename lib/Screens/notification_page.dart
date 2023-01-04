@@ -18,25 +18,29 @@ class NotifPage extends StatelessWidget {
   Future getnotif(context) async{
     final user = Provider.of<UserFB?>(context);
     final uid = user!.uid;
-    // notifications = await DatabaseService(uid: uid).getnotifications();
-    for(int i=0; i<=notifications.length; i++ ) {
-    //   // DateTime dt = DateTime.parse(notifications[i].date);
-    //   var newDateTimeObj = new DateFormat().add_yMd().add_Hms().parse( notifications[i].date)
+    notifications = await DatabaseService(uid: uid).getnotifications();
+    for(int i=0; i <= notifications.length; i++ ) {
+      // DateTime dt = DateFormat().add_yMd().parse('July 11, 2022');
+      // var newDateTimeObj = new DateFormat().add_yMd().add_Hms().parse( 'July 11, 2022');
     //   print(DateFormat('yMd').format(DateTime.now()));
     //
     //   var x = DateFormat.yMMMd().format(DateTime.now());
-      // print(DateFormat.yMd().format(dt));
+    //   print('---------------$dt--------------------');
 
-      individualnotif.add( Column(
-          children:[
-            Row(
-              children: [
-                Text('${notifications[i].date}'),
-                Text('${notifications[i].time}'),
-              ],
-            ),
-            Text('${notifications[i].text}')
-          ]));
+      individualnotif.add( Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children:[
+              Row(
+                children: [
+                  Text('${notifications[i].date}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
+                ],
+              ),
+              Text('${notifications[i].text}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300, ))
+            ]),
+      ));
+      print(individualnotif.length);
       // individualnotifdate.add(Text('${notifications[i].time}'));
       // individualnotifdate.add(Text('${notifications[i].text}'));
     }
@@ -46,16 +50,25 @@ class NotifPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    int order =220;
+    int order = 220;
     final date = DateTime.now();
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.black87, //change your color here
+        ),
+        backgroundColor: Colors.white70,
+        title: Text('Notifications', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 25, color: Colors.black87),),
+        elevation: 0,
+
+      ),
       // bottomNavigationBar: const BottomTab(),
       body: SafeArea(
         child: FutureBuilder(
           future: getnotif(context),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             switch(snapshot.connectionState){
-              case ConnectionState.waiting: return CircularProgressIndicator();
+              case ConnectionState.waiting: return Center(child: CircularProgressIndicator());
               default: return ListView(
                 children: [
                   const BuildAnimatedText(),
