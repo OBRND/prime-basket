@@ -18,7 +18,7 @@ import 'package:primebasket/Widget/app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../Services/Auth.dart';
-import 'p2p_page.dart';
+import 'P2Ppages/p2p_page.dart';
 
 class HomePage extends StatelessWidget {
   // const HomePage({Key? key}) : super(key: key);
@@ -40,107 +40,16 @@ class HomePage extends StatelessWidget {
     final Auth_service _auth = Auth_service();
     final Size size = MediaQuery.of(context).size;
     print('$user');
+    print('${DateTime.now().toLocal()}');
 
     return Scaffold(
-      // bottomNavigationBar: const BottomTab(),
-      backgroundColor: Color(0xffc0c0c4),
+      backgroundColor: Color(0xf0cccbcb),
       body: ListView(
         children: [
           AppBarWidget(user: user),
-          const BuildAnimatedText(),
-
+          BuildAnimatedText(),
           FutureBuilder(
             future: userInfo(context),
-            // initialData: Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: ClipRRect(
-            //     borderRadius: BorderRadius.circular(15),
-            //     child: Card(
-            //       shape: (
-            //           RoundedRectangleBorder(
-            //             borderRadius: BorderRadius.circular(18.0),
-            //           )),
-            //       color: Color(0xff344381),
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(8.0),
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             Row(
-            //               children: [
-            //                 SizedBox(width: size.width*.7,),
-            //                 Row(
-            //                   children: [
-            //                     Text("Tier ", style: TextStyle(
-            //                         fontSize: size.width*0.07, fontWeight: FontWeight.w200, color: Colors.white60),),
-            //                     Text('loading...', style: TextStyle(
-            //                         fontSize: size.width*0.07, fontWeight: FontWeight.w200, color: Colors.white60),)
-            //                   ],
-            //                 ),
-            //               ],
-            //             ),
-            //             Column(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 Padding(
-            //                   padding: const EdgeInsets.all(8.0),
-            //                   child: Text("Actual Balance",
-            //                     style: TextStyle(color: Colors.white, fontSize: size.width*0.06, fontWeight: FontWeight.w300),),
-            //                 ),
-            //                 Row(
-            //                   children: [
-            //                     Text("\$", style: TextStyle(color: Colors.white60,fontSize: size.width*0.1),),
-            //                     Text('0',
-            //                       style: TextStyle(color: Colors.white60,fontSize: size.width*0.15, fontWeight: FontWeight.w200),),
-            //                   ],
-            //                 )
-            //               ],
-            //             ),
-            //             SizedBox(
-            //               height: size.height*0.01,
-            //             ),
-            //             Row(
-            //               children: [
-            //                 Column(
-            //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                   children: [
-            //                     Text("Est Earnings",
-            //                       style: TextStyle(color: Colors.white, fontSize: size.width*0.06, fontWeight: FontWeight.w200),),
-            //                     Text("\$ 0'}", style: TextStyle(
-            //                         color: Colors.white,fontSize: size.width*0.06, fontWeight: FontWeight.w300),)
-            //                   ],
-            //                 ),
-            //                 SizedBox(width: 30,),
-            //                 Column(
-            //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                   children: [
-            //                     Text("Virtual Balance",
-            //                       style: TextStyle(color: Colors.white, fontSize: size.width*0.06, fontWeight: FontWeight.w200),),
-            //                     Text("\$ 0", style: TextStyle(
-            //                         color: Colors.white,fontSize: size.width*0.06, fontWeight: FontWeight.w300),)
-            //                   ],
-            //                 ),
-            //               ],
-            //             ),
-            //             SizedBox(
-            //               height: size.height*0.01,
-            //             ),
-            //             Row(
-            //               children: [
-            //                 SizedBox(width: size.width*.7,),
-            //                 Text("Series loading", style: TextStyle(
-            //                     fontSize: size.width*0.06, fontWeight: FontWeight.w200, color: Colors.white60),),
-            //               ],
-            //             ),
-            //             SizedBox(
-            //               height: size.height*0.01,
-            //             ),
-            //           ],
-            //         ),
-            //       ) /* add child content here */,
-            //     ),
-            //   ),
-            // ),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               switch(snapshot.connectionState){
                 case ConnectionState.waiting:
@@ -161,15 +70,9 @@ class HomePage extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  SizedBox(width: size.width*.5,),
-                                  Row(
-                                    children: [
-                                      Text("Tier ", style: TextStyle(
-                                          fontSize: size.width*0.07, fontWeight: FontWeight.w200, color: Colors.white60),),
-                                      Text('loading...', style: TextStyle(
-                                          fontSize: size.width*0.07, fontWeight: FontWeight.w200, color: Colors.white60),)
-                                    ],
-                                  ),
+                                  SizedBox(width: size.width*.45,),
+                                  Text("Tier loading", style: TextStyle(
+                                      fontSize: size.width*0.07, fontWeight: FontWeight.w200, color: Colors.white60),),
                                 ],
                               ),
                               Column(
@@ -199,7 +102,7 @@ class HomePage extends StatelessWidget {
                                     children: [
                                       Text("Est Earnings",
                                         style: TextStyle(color: Colors.white, fontSize: size.width*0.06, fontWeight: FontWeight.w200),),
-                                      Text("\$ 0'}", style: TextStyle(
+                                      Text("\$ 0", style: TextStyle(
                                           color: Colors.white,fontSize: size.width*0.06, fontWeight: FontWeight.w300),)
                                     ],
                                   ),
@@ -273,7 +176,7 @@ class HomePage extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text("\$", style: TextStyle(color: Colors.white60,fontSize: size.width*0.1),),
-                                    Text(accountdata[1],
+                                    Text(double.parse(accountdata[1]).toStringAsFixed(2),
                                       style: TextStyle(color: Colors.white60,fontSize: size.width*0.15, fontWeight: FontWeight.w200),),
                                   ],
                                 )
@@ -289,7 +192,7 @@ class HomePage extends StatelessWidget {
                                   children: [
                                     Text("Est Earnings",
                                       style: TextStyle(color: Colors.white, fontSize: size.width*0.06, fontWeight: FontWeight.w200),),
-                                    Text("\$ ${accountdata[2].substring(0, 3)}", style: TextStyle(
+                                    Text("\$ ${double.parse(accountdata[2]).toStringAsFixed(2)}", style: TextStyle(
                                         color: Colors.white,fontSize: size.width*0.06, fontWeight: FontWeight.w300),)
                                   ],
                                 ),
@@ -299,7 +202,7 @@ class HomePage extends StatelessWidget {
                                   children: [
                                     Text("Virtual Balance",
                                       style: TextStyle(color: Colors.white, fontSize: size.width*0.06, fontWeight: FontWeight.w200),),
-                                    Text("\$${accountdata[0]}", style: TextStyle(
+                                    Text("\$${double.parse(accountdata[0]).toStringAsFixed(2)}", style: TextStyle(
                                         color: Colors.white,fontSize: size.width*0.06, fontWeight: FontWeight.w300),)
                                   ],
                                 ),
@@ -310,7 +213,7 @@ class HomePage extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                SizedBox(width: size.width*.68),
+                                SizedBox(width: size.width*.64),
                                 Text("Series 1", style: TextStyle(
                                     fontSize: size.width*0.06, fontWeight: FontWeight.w200, color: Colors.white60),),
                               ],
@@ -412,11 +315,11 @@ class HomePage extends StatelessWidget {
                             colors: [Color(0xFF26C9F1),
                               Color(0x9D4E76CC)
                             ]),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
+                                      borderRadius: BorderRadius.circular(25.0),
                                       ),
                                 backgroundColor: Color(0x38344381)),
                           onPressed: (){
@@ -424,7 +327,7 @@ class HomePage extends StatelessWidget {
                               builder: (context) => P2pTadingPage()));
                           },
                           child: Text('P2P trading',
-                              style: TextStyle(fontSize: 18, color: Colors.white70))),
+                              style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w300))),
                     ),
                   ),
                 ),
@@ -439,17 +342,17 @@ class HomePage extends StatelessWidget {
                             colors: [Color(0x9D4E76CC),
                               Color(0xFF26C9F1)
                             ]),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
                       child: ElevatedButton(onPressed: (){
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => SharePage()));
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
                               backgroundColor:  Color(0x1D344381)),
-                          child: Text('Share',  style: TextStyle(fontSize: 16, color: Colors.white70),)),
+                          child: Text('Share',  style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w300),)),
                     ),
                   ),
                 ),
@@ -464,18 +367,18 @@ class HomePage extends StatelessWidget {
                             colors: [Color(0xFF26C9F1),
                               Color(0x9D4E76CC),
                             ]),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
                       child: ElevatedButton(onPressed: (){
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => OrderFulfilled()));
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
                               backgroundColor:  Color(0x24344381)),
-                          child: const Text('Order fulfillment       history',
-                              style: TextStyle(fontSize: 16, color: Colors.white70))),
+                          child: const Text('Order fulfillment history',
+                              style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w300))),
                     ),
                   ),
                 ),
@@ -490,18 +393,18 @@ class HomePage extends StatelessWidget {
                             colors: [Color(0x9D4E76CC),
                               Color(0xFF26C9F1),
                               ]),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
                       child: ElevatedButton(onPressed: (){
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => WithdrawalhistoryPage()));
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
                               backgroundColor:  Color(0x1A344381)),
                           child: Text('         Deposit/ Withdrawal history',
-                              style: TextStyle(fontSize: 15, color: Colors.white70))),
+                              style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w300))),
                     ),
                   ),
                 ),
@@ -517,11 +420,11 @@ class HomePage extends StatelessWidget {
                             colors: [Color(0xFF26C9F1),
                               Color(0x9D4E76CC),
                             ]),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
                               backgroundColor: Colors.transparent),
                           onPressed: (){
@@ -529,7 +432,7 @@ class HomePage extends StatelessWidget {
                                 builder: (context) => Tierpage()));
                           },
                           child: Text('Tier system',
-                              style: TextStyle(fontSize: 16, color: Colors.white70))),
+                              style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w300))),
                     ),
                   ),
                 ),
@@ -544,17 +447,17 @@ class HomePage extends StatelessWidget {
                             colors: [Color(0x9D4E76CC),
                               Color(0xFF26C9F1),
                               ]),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
                       child: ElevatedButton(onPressed: (){
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => FAQ()));
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
                               backgroundColor:  Colors.transparent),
-                          child: Text('FAQs',  style: TextStyle(fontSize: 16, color: Colors.white70),)),
+                          child: Text('FAQs',  style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w300),)),
                     ),
                   ),
                 ),
@@ -569,7 +472,7 @@ class HomePage extends StatelessWidget {
                             colors: [Color(0xFF26C9F1),
                               Color(0x9D4E76CC),
                             ]),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
                       child: ElevatedButton(onPressed: (){
                         Navigator.of(context).push(MaterialPageRoute(
@@ -577,10 +480,11 @@ class HomePage extends StatelessWidget {
 
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
                               backgroundColor:  Colors.transparent),
-                          child: const Text('change password',style: TextStyle(fontSize: 16, color: Colors.white70))),
+                          child: const Text('change password',
+                              style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w300))),
                     ),
                   ),
                 ),
@@ -595,18 +499,18 @@ class HomePage extends StatelessWidget {
                             colors: [Color(0x9D4E76CC),
                               Color(0xFF26C9F1),
                               ]),
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(25.0),
                       ),
                       child: ElevatedButton(onPressed: (){
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => contactUs()));
                       },
                           style: ElevatedButton.styleFrom(elevation: 0, shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
+                            borderRadius: BorderRadius.circular(25.0),
                           ),
                               backgroundColor:  Colors.transparent),
                           child: Text('contact us',
-                              style: TextStyle(fontSize: 16, color: Colors.white70))),
+                              style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.w300))),
                     ),
                   ),
                 ),

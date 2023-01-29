@@ -16,7 +16,7 @@ class wrapper extends StatelessWidget {
     if (user == null){
       return LoginPage();
     } else {
-      return BottomTab();
+      return BottomTab(index: 0);
     }
   }
 }

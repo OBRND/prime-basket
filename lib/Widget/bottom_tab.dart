@@ -3,15 +3,17 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:primebasket/Screens/Orders/Orders_page.dart';
 import 'package:primebasket/Screens/home_page.dart';
 class BottomTab extends StatefulWidget {
-  const BottomTab({Key? key}) : super(key: key);
+  // const BottomTab({Key? key}) : super(key: key);
+  final int index;
+  BottomTab({required this.index});
 
   @override
-  State<BottomTab> createState() => _BottomTabState();
+  State<BottomTab> createState() => _BottomTabState(selectedIndex:index);
 }
 
 class _BottomTabState extends State<BottomTab> {
-
-  int _selectedIndex = 0;
+  int selectedIndex;
+  _BottomTabState({required this.selectedIndex});
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
@@ -21,7 +23,7 @@ class _BottomTabState extends State<BottomTab> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      selectedIndex = index;
     });
   }
 
@@ -29,7 +31,7 @@ class _BottomTabState extends State<BottomTab> {
     Widget build(BuildContext context) {
       return Scaffold(
         body: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
+          child: _widgetOptions.elementAt(selectedIndex),
         ),
         bottomNavigationBar:  Container(
             decoration: BoxDecoration(
@@ -38,8 +40,8 @@ class _BottomTabState extends State<BottomTab> {
                     end: Alignment.bottomCenter,
                     colors: [
                       // Color(0xffb3b4b6),
-                      Color(0xff748fc2),
-                      Color(0xff766aad),]),
+                      Color(0xff5d71ce),
+                      Color(0xff473e73),]),
                 // borderRadius: BorderRadius.circular(15.0),
               // color: Color(0xffc0c0c4),
               boxShadow: [
@@ -77,10 +79,10 @@ class _BottomTabState extends State<BottomTab> {
                         iconSize: 25,
                       ),
                     ],
-          selectedIndex: _selectedIndex,
+          selectedIndex: selectedIndex,
           onTabChange: (index) {
             setState(() {
-              _selectedIndex = index;
+              selectedIndex = index;
             });
           },
         ),

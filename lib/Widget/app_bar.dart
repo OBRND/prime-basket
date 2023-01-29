@@ -28,7 +28,7 @@ class AppBarWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 6, right: 3),
               child: CircleAvatar(
-                radius: 21,
+                radius: 18,
                 backgroundImage: user.photoURL == null ? null : NetworkImage(user.photoURL!),
               ),
             ),

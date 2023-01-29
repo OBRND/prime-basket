@@ -10,7 +10,7 @@ import 'package:primebasket/Screens/login_page.dart';
 import 'package:primebasket/Screens/Withdrawpages/mobiwalletwithdraw.dart';
 import 'package:primebasket/Screens/notification_page.dart';
 import 'package:primebasket/Screens/order_fulfullment_history.dart';
-import 'package:primebasket/Screens/p2p_page.dart';
+import 'package:primebasket/Screens/P2Ppages/p2p_page.dart';
 import 'package:primebasket/Screens/share_page.dart';
 import 'package:primebasket/Screens/Topuppages/top_up_page.dart';
 import 'package:primebasket/Screens/withrawal_history.dart';

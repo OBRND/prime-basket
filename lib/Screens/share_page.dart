@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:primebasket/Widget/animated_text.dart';
+import 'package:primebasket/Widget/bottomnavtab.dart';
 
 import '../Services/Database.dart';
+import 'Withdrawpages/Withdrawpage.dart';
 
 class SharePage extends StatefulWidget {
   @override
@@ -25,10 +28,29 @@ class _SharePageState extends State<SharePage> {
   Future getcount() async{
     final user = FirebaseAuth.instance.currentUser!;
     String count = await DatabaseService(uid: user!.uid).getsharecount();
+    if(int.parse(count) >= 10){
+      final user = FirebaseAuth.instance.currentUser!;
+      await DatabaseService(uid: user!.uid).updatecount();
+      setState(() {
+        Count = '0';
+      });
+    }
+      else{
     setState(() {
       Count = count;
     });
+      }
   }
+
+  // check() async{
+  //   if(int.parse(Count) >= 10){
+  //     final user = FirebaseAuth.instance.currentUser!;
+  //      await DatabaseService(uid: user!.uid).updatecount();
+  //     setState(() {
+  //       Count = '0';
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +65,13 @@ class _SharePageState extends State<SharePage> {
     Count == "8" ? Checks = [true, true, true, true, true, true, true, true, false, false, false] :
     Count == "9" ? Checks = [true, true, true, true, true, true, true, true, true, false, false] :
     Count == "10" ? Checks = [true, true, true, true, true, true, true, true, true, true, false] :
-    Count == "11" ? Checks = [true, true, true, true, true, true, true, true, true, true, true] :
     Checks = [false, false, false, false, false, false, false, false, false, false, false];
     return Scaffold(
       extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Color(0xff709db7),
           elevation: 0,),
+        bottomNavigationBar: bottomtabwidget(),
         body: ListView(
           children: [
             Container(
@@ -71,21 +93,6 @@ class _SharePageState extends State<SharePage> {
                 TextStyle(color: Colors.black87, fontSize: 30, fontWeight: FontWeight.w300),),
               ),
             ),
-            // TextButton(
-            //   child: Text('Share text and link'),
-            //   onPressed: share,
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: size.width*0.02),
-            //   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       Image.asset('images/logo.png', width: size.width*0.15,),
-            //       Image.asset('images/Logotext.png', width: size.width*0.6,)
-            //       ,IconButton(onPressed: (){}, icon: Icon(Icons.doorbell, color:Colors.red,size: size.width*0.1,))
-            //     ],
-            //   ),
-            // ),
-            // const BuildAnimatedText(),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Center(child: Text('Share Count: $Count', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 25),)),
@@ -107,7 +114,6 @@ class _SharePageState extends State<SharePage> {
                     buildicon(Checks[7]),
                     buildicon(Checks[8]),
                     buildicon(Checks[9]),
-                    buildicon(Checks[10]),
                   ],
                 ),
               ),
@@ -131,21 +137,10 @@ class _SharePageState extends State<SharePage> {
                 ),
               ),
             ),
-            // Center(child: Text("OR", style: TextStyle(fontSize: size.width*0.07,color: Colors.black,fontWeight: FontWeight.bold),)),
-            //
-            // Padding(
-            //   padding:EdgeInsets.symmetric(horizontal:size.width*0.02,vertical: size.height*0.01),
-            //   child: MaterialButton(onPressed: share,
-            //     shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(10)
-            //     ),
-            //     color: Colors.purpleAccent.withOpacity(0.7), child: Padding(
-            //       padding: EdgeInsets.symmetric(vertical: size.height*0.02),
-            //       child: Text("Share as message", style: TextStyle(fontSize: size.width*0.055,color: Colors.white),),
-            //     ),
-            //   ),
-            // )
-
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Share the app once everyday on social media or send it as a message. Completing it for 10 days increases your tier by 1 and resets the process.'),
+            )
           ],
         ),
     );
@@ -163,10 +158,9 @@ Future<void> share() async {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: Container(
-        height: 25,
-        width: 25,
+        height: 30,
+        width: 30,
         child: Center(child: Icon(selected == false ? Icons.circle_outlined : Icons.check_circle, size: 26,))
       ),
     );
-
 }

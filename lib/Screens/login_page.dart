@@ -53,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(horizontal: size.width*0.005),
                            labelText: "Email",
+                          labelStyle: TextStyle(fontWeight: FontWeight.w300)
                         ),
                         validator: (val) => val!.isEmpty ? ' Enter an email' : null,
                       ),
@@ -68,6 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.symmetric(horizontal: size.width*0.005),
                           labelText: "Password",
+                            labelStyle: TextStyle(fontWeight: FontWeight.w300)
                           // hintText: 'Enter your password here'
                         ),
                       ),
@@ -95,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                             }
                             if(result != null){
                               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                  builder: (context) => BottomTab()));
+                                  builder: (context) => BottomTab(index: 0)));
                             }
                           }
                           // Navigator.pushNamed(context, '/Bottomnavigation');
@@ -112,8 +114,8 @@ class _LoginPageState extends State<LoginPage> {
                             child: Text("Login",
                           style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: size.width*0.08),)),
+                              fontWeight: FontWeight.w300,
+                              fontSize: 22),)),
                       ),
                     ),
                   ],
@@ -122,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
 
-              Text("Or", style: TextStyle(fontSize: size.width*0.07, fontWeight: FontWeight.bold),),
+              Text("Or", style: TextStyle(fontSize: size.width*0.07, fontWeight: FontWeight.w400),),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width*0.15, vertical: size.height*0.05),
                 child:ElevatedButton(
@@ -136,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     }
                     if(result != null){
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => BottomTab()));
+                          builder: (context) => BottomTab(index: 0)));
                     }
                 },
                   style: ButtonStyle(
@@ -151,17 +153,18 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     SvgPicture.asset('images/google.svg',width: MediaQuery.of(context).size.width*0.06),
                     Text("Sign in with Google",
-                      style: TextStyle(fontSize: size.width*0.055, color: Colors.black, fontWeight: FontWeight.w500),)
+                      style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.w400),)
                   ],
                 ),),
               ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+            Wrap(
+              alignment: WrapAlignment.spaceEvenly,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
                 children:[
                   // SizedBox(height: size.width*0.06),
                   Text("Are you new to Prime Basket?",
-                    style: TextStyle(fontSize: size.width*0.05, fontWeight: FontWeight.w500),),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -172,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: TextDecoration.underline,
                       color: Colors.blue,
                       fontWeight: FontWeight.w500,
-                      fontSize: size.width*0.07),)),
+                      fontSize: 22),)),
                 )])
             ],
           ),

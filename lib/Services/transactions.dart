@@ -6,7 +6,7 @@ import 'package:primebasket/Services/Database.dart';
 // Make a request to the BscScan API to retrieve the receipt status of a transaction
 
 
-Future checkTransactionReceiptStatus(String transactionHash) async {
+Future checkTransactionReceiptStatus(String transactionHash, int screen) async {
   final user = FirebaseAuth.instance.currentUser!;
 
   // late String _transactionHash = '';
@@ -14,53 +14,62 @@ Future checkTransactionReceiptStatus(String transactionHash) async {
 
   String apiKey = "5ISK5SWNXSBBVEBSZABGZ4W66RMNFK7UKS";
 
-  // Replace TRANSACTION_HASH with the actual transaction hash you want to verify
 
-  // Make a GET request to the BSC Scan API to retrieve the transaction details
-  // final response = await http.get(Uri.parse('https://api.bscscan.com/api?module=transaction&action=gettxreceiptstatus&txhash=0x26ce036dc42cd8fc3f7ff76bec3b1e1c55aac3172683384895e94241fa3f18a4&apikey=5ISK5SWNXSBBVEBSZABGZ4W66RMNFK7UKS'));
-  // print(response.body);
   final response = await http.get(
-    Uri.parse("https://api.bscscan.com/api?module=account&action=txlist&address=0x43492891eaa2e84147ee7f3ec4d0bf010bbbc5f1&apikey=$apiKey"),
+    Uri.parse("https://api.bscscan.com/api?module=account&action=tokentx&contractaddress&address=0x43492891eaa2e84147ee7f3ec4d0bf010bbbc5f1&page&offset=5&startblock=0&endblock=999999999&sort=asc&apikey=$apiKey"),
   );
 
-  // Parse the response as a JSON object
   var data = json.decode(response.body);
   if (response.statusCode == 200) {
-    // Parse the response as a JSON object
+
     final data = json.decode(response.body); // Check the "success" field in the response to determine the receipt status of the transaction
     print(data);
 
     // Extract the transaction amount from the JSON object
     print('${data["result"][0]['hash']}');
-    print('${data["result"][1]["hash"]}');
-    print(data["result"][2]["hash"]);
-    print(data["result"][3]["hash"]);
-    print(data["result"][4]["hash"]);
-    print(data["result"][5]["hash"]);
+    // print('${data["result"][1]["hash"]}');
+    // print(data["result"][2]["hash"]);
+    // print(data["result"][3]["hash"]);
+    // print(data["result"][4]["hash"]);
+    // print(data["result"][5]["hash"]);
     List Txlist = await DatabaseService(uid: user.uid).gettransactionHash();
-
     for(int i = 0; i < (data["result"]).length; i++){
-
+      print('----------------${data["result"][i]['hash']}-------------------');
       if(data["result"][i]['hash'] == transactionHash){
+        print('----------------$transactionHash-------------------');
         if(Txlist.contains(transactionHash)) {
           return 'Failed';
         }
-        else {
-          var transactionAmount = (double.parse(data["result"][0]["value"]) /
+        else if(data["result"][i]['to'] == '0x43492891eaa2e84147ee7f3ec4d0bf010bbbc5f1' && data["result"][i]['tokenName'] == "Binance-Peg BSC-USD"){
+          var transactionAmount = (double.parse(data["result"][i]["value"]) /
               1000000000000000000); // for converting the WEI to BNB
           print('----------$transactionAmount--------');
 
           // var _transactionHash = transactionHash;
-          String Usdconverted = await _convertTransactionAmountToUSD(transactionAmount);
-          print('++++++++++++$Usdconverted+++++++++++++++++');
+          // String Usdconverted = await _convertTransactionAmountToUSD(transactionAmount);
+          print('++++++++++++$transactionAmount+++++++++++++++++');
           print(Txlist);
-          return 'Succesfull';
+          List txn = [transactionAmount.toString(),
+          'OK', transactionHash];
+          if(screen == 1){
+            await DatabaseService(uid: user.uid).topuptxn(txn);
+            return 'Succesfull';
+          }
+          if(screen == 2){
+            return ['Succesfull',transactionAmount.toString()];
+          }
+          if(screen == 3){
+            return 'Succesfull';
+          }
+        }
+        else {
+          return 'failed';
         }
       }
       else {
-        return 'failed';
+        if((data["result"]).length-1 == i){
+        return 'failed';}
       }
-
     }
 
   } else { // Throw an exception if the request failed
