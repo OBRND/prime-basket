@@ -71,7 +71,7 @@ class NotifPage extends StatelessWidget {
               case ConnectionState.waiting: return Center(child: CircularProgressIndicator());
               default: return ListView(
                 children: [
-                  const BuildAnimatedText(),
+                  BuildAnimatedText(),
                   Column(
                     children: individualnotif,
                   )

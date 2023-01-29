@@ -7,6 +7,7 @@ import 'package:primebasket/Services/Database.dart';
 import 'package:provider/provider.dart';
 
 import '../../Services/User.dart';
+import '../../Widget/bottomnavtab.dart';
 
 class Orders extends StatefulWidget {
   const Orders({Key? key}) : super(key: key);
@@ -276,14 +277,32 @@ class _OrdersState extends State<Orders> {
                           ),
                         )),
                   );
-
+                  SnackBar snackBartier = SnackBar(
+                    backgroundColor: Colors.transparent,
+                    content: Card(
+                        color: Colors.redAccent,
+                        child: Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.dangerous_rounded),
+                              Text('Upgrade you tier to get access', style: TextStyle(
+                                  fontSize: size.width*.055, fontWeight: FontWeight.w600
+                              ),),
+                            ],
+                          ),
+                        )),
+                  );
                   List<Widget> list = <Widget>[];
                   for(var i = 0; i < products[selectedIndex].length; i++) {
                     print('${products[selectedIndex][i].name} ---${products[selectedIndex][i].PID}');
                     list.add( InkWell(
                       onTap: double.parse(products[selectedIndex][i].price) > double.parse(userinfo[0]) ?
-                      (){ScaffoldMessenger.of(context).showSnackBar(snackBar);} : () {
-                        int initialQty = 1;
+                          (){ScaffoldMessenger.of(context).showSnackBar(snackBar);} :
+                      selectedIndex + 1 > int.parse(userinfo[3]) ?
+                          (){ScaffoldMessenger.of(context).showSnackBar(snackBartier);} :
+                          () {
+                        int initialQty = 0;
                         double total = 0;
                         bal = double.parse(userinfo[0]);
 
@@ -294,7 +313,7 @@ class _OrdersState extends State<Orders> {
                                         AlertDialog(
                                             contentPadding: EdgeInsets.all(10),
                                             scrollable: true,
-                                            title: Text(
+                                            title: const Text(
                                               'Confirm for purchase',
                                               style: TextStyle(fontSize: 20,
                                                   fontWeight: FontWeight
@@ -303,7 +322,8 @@ class _OrdersState extends State<Orders> {
                                                 children: [
                                                   Container(
                                                     height: 150,
-                                                    child: Image.network('${products[selectedIndex][i].image}'),
+                                                    child:products[selectedIndex][i].image == null ?
+                                                    Center(child: Text('sorry, couldn\'t load image information')) : Image.network('${products[selectedIndex][i].image}'),
                                                   ),
                                                   Card(
                                                     shape: RoundedRectangleBorder(
@@ -313,8 +333,9 @@ class _OrdersState extends State<Orders> {
                                                     child: Padding(
                                                       padding: const EdgeInsets
                                                           .all(10.0),
-                                                      child: Text(
-                                                        'Balance: \$${bal - double.parse(products[selectedIndex][i].price)}',
+                                                      child:initialQty == 0 ?
+                                                      Text('Balance: ${bal.toStringAsFixed(2)}',style: TextStyle(color: Colors.white),)
+                                                          : Text('Balance: \$${(bal - double.parse(products[selectedIndex][i].price)).toStringAsFixed(2)}',
                                                         style: TextStyle(
                                                             color: Colors
                                                                 .white),),
@@ -436,7 +457,9 @@ class _OrdersState extends State<Orders> {
                                                   ),
                                                 ]))));
                       },
-                      child: Card(
+                      child: products[selectedIndex][i].image == null ?
+                      Center(child: Text('sorry, couldn\'t load image information'))
+                      : Card(
                         elevation: 10,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
@@ -456,7 +479,18 @@ class _OrdersState extends State<Orders> {
                                     return Center(
                                       child: CircularProgressIndicator(),
                                     );
-                                    },),
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        color: Colors.transparent,
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          'Whoops! couldn\'t load image. check your internet connection',
+                                          style: TextStyle(fontSize: 17),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
@@ -495,7 +529,7 @@ class _OrdersState extends State<Orders> {
                                         .start,
                                     children: [
                                       Text('${products[selectedIndex][i].name}', style: TextStyle(color: Colors.black54,
-                                          fontSize: 25),),
+                                          fontSize: 20, fontWeight: FontWeight.w400)),
                                       Text(' \$${products[selectedIndex][i].price}', style: TextStyle(
                                           color: Colors.black87,
                                           fontSize: 20,
@@ -599,11 +633,28 @@ class _OrdersState extends State<Orders> {
             ),
           )),
     );
+    SnackBar snackBartier = SnackBar(
+      backgroundColor: Colors.transparent,
+      content: Card(
+          color: Colors.redAccent,
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Row(
+              children: [
+                Icon(Icons.dangerous_rounded),
+                Text('Upgrade you tier to get access', style: TextStyle(
+                    fontSize: size.width*.055, fontWeight: FontWeight.w600
+                ),),
+              ],
+            ),
+          )),
+    );
     return InkWell(
       onTap: double.parse(products[tier][i].price) > double.parse(userinfo[0]) ?
-          (){ScaffoldMessenger.of(context).showSnackBar(snackBar);} :() async {
-
-        int initialQty = 1;
+          (){ScaffoldMessenger.of(context).showSnackBar(snackBar);} :
+      tier + 1 > int.parse(userinfo[3]) ? (){ScaffoldMessenger.of(context).showSnackBar(snackBartier);} :
+          () async {
+        int initialQty = 0;
         double total = 0;
         bal = double.parse(userinfo[0]);
         showDialog(context: context,
@@ -621,16 +672,27 @@ class _OrdersState extends State<Orders> {
                                     color: Colors.redAccent,
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
-                                      child: Text(
-                                        'Balance: \$${bal - double.parse(products[tier][i].price)}',
-                                        style: TextStyle(
-                                            color: Colors
-                                                .white),),
+                                      child: initialQty == 0 ? Text(
+                                          'Balance: ${bal.toStringAsFixed(2)}',style: TextStyle(
+                                          color: Colors.white),
+                                      ) : Text(
+                                        'Balance: \$${(bal - double.parse(products[tier][i].price)).toStringAsFixed(2)}',
+                                        style: TextStyle(color: Colors.white),),
                                     ),
                                   ),
                                   Container(
                                     height: 150,
                                     child: CachedNetworkImage(
+                                      errorWidget:  (context, error, stackTrace) {
+                                        return Container(
+                                          color: Colors.black12,
+                                          alignment: Alignment.center,
+                                          child: const Text(
+                                            'Whoops! couldn\'t load image. check your connection and try again',
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                        );
+                                      },
                                       progressIndicatorBuilder: (context, url, downloadProgress) =>
                                           CircularProgressIndicator(
                                             value: downloadProgress.totalSize != null ?
@@ -682,7 +744,7 @@ class _OrdersState extends State<Orders> {
                                                 SizedBox(
                                                   width: 35,
                                                   child: TextButton(
-                                                      onPressed: initialQty == 1? null : () {
+                                                      onPressed: initialQty == 0 ? null : () {
                                                         if(initialQty > 1){
                                                           setState(() {
                                                             bal += double.parse(products[tier][i].price);
@@ -771,6 +833,16 @@ class _OrdersState extends State<Orders> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CachedNetworkImage(
+                    errorWidget:  (context, error, stackTrace) {
+                      return Container(
+                        color: Colors.black12,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'Whoops! couldn\'t load image. check your connection and try again',
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      );
+                    },
                     progressIndicatorBuilder: (context, url, downloadProgress) =>
                         CircularProgressIndicator(
                           value: downloadProgress.totalSize != null ?
@@ -812,7 +884,7 @@ class _OrdersState extends State<Orders> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('${products[tier][i].name}',
-                        style: TextStyle(color: Colors.black54, fontSize: 18),),
+                        style: TextStyle(color: Colors.black54, fontSize: 14),),
                       Text(' \$${products[tier][i].price}', style: TextStyle(
                           color: Colors.black87,
                           fontSize: 25,
@@ -829,7 +901,7 @@ class _OrdersState extends State<Orders> {
               child: Column(
                 children: [
                   Text('Est. earnings',
-                      style: TextStyle(color: Colors.black54, fontSize: 14)),
+                      style: TextStyle(color: Colors.black54, fontSize: 11)),
                   Text('\$${products[tier][i].earnings}',
                       style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600, fontSize: 16)),
                 ],

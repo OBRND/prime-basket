@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:primebasket/Screens/chechreferal.dart';
 
 import '../Services/Auth.dart';
+import '../Widget/bottom_tab.dart';
 import '../Widget/decorations.dart';
 
 class Sign_up extends StatefulWidget {
@@ -36,22 +38,6 @@ class _Sign_upState extends State<Sign_up> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text('Sign up to Prime Basket', style: TextStyle(fontSize: 24),),
-        // actions: [
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: FloatingActionButton.extended(onPressed:(){
-          //     Navigator.pushNamed(context, 'login');
-          //   },
-          //     shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(18.0),
-          //       side: BorderSide(color: Color(0xffd7d7d7)),),
-          //     backgroundColor: Color(0xffe3c014),
-          //     extendedPadding: EdgeInsetsDirectional.only(start: 16.0, end: 20.0),
-          //     icon: Icon(Icons.person_outline_outlined),
-          //     label: Text('Log in'),
-          //   ),
-          // )
-        // ],
       ),
       body: Stack(
 
@@ -96,34 +82,34 @@ class _Sign_upState extends State<Sign_up> {
                             setState(() => password = val);
                           }
                       ),
-                      SizedBox( height: 10),
-                      TextFormField(
-                          decoration: textinputdecoration.copyWith(hintText: 'First Name'),
-                          validator: (val) => val!.isEmpty ? 'Enter First' : null,
-                          onChanged: (val){
-                            setState(() => First_name = val);
-                          }
-                      ),
-                      SizedBox( height: 10),
-                      TextFormField(
-                          decoration: textinputdecoration.copyWith(hintText: 'Last Name'),
-                          validator: (val) => val!.isEmpty ? 'Enter Last name' : null,
-                          onChanged: (val){
-                            setState(() => Last_name = val);
-                          }
-                      ),
-                      SizedBox( height: 10),
-                      TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: textinputdecoration.copyWith(hintText: 'Phone number'),
-                          validator: (val) => val!.length == 10 ?   null : 'Please enter a 10 digit phone number ',
-                          onChanged: (val){
-                            setState(() => Phone_number = val );
-                          }
-                      ),
+                      // SizedBox( height: 10),
+                      // TextFormField(
+                      //     decoration: textinputdecoration.copyWith(hintText: 'First Name'),
+                      //     validator: (val) => val!.isEmpty ? 'Enter First' : null,
+                      //     onChanged: (val){
+                      //       setState(() => First_name = val);
+                      //     }
+                      // ),
+                      // SizedBox( height: 10),
+                      // TextFormField(
+                      //     decoration: textinputdecoration.copyWith(hintText: 'Last Name'),
+                      //     validator: (val) => val!.isEmpty ? 'Enter Last name' : null,
+                      //     onChanged: (val){
+                      //       setState(() => Last_name = val);
+                      //     }
+                      // ),
+                      // SizedBox( height: 10),
+                      // TextFormField(
+                      //     keyboardType: TextInputType.number,
+                      //     inputFormatters: <TextInputFormatter>[
+                      //       FilteringTextInputFormatter.digitsOnly
+                      //     ],
+                      //     decoration: textinputdecoration.copyWith(hintText: 'Phone number'),
+                      //     validator: (val) => val!.length == 10 ?   null : 'Please enter a 10 digit phone number ',
+                      //     onChanged: (val){
+                      //       setState(() => Phone_number = val );
+                      //     }
+                      // ),
                       SizedBox( height: 10),
                       ElevatedButton(
                           style: ButtonStyle(
@@ -138,12 +124,17 @@ class _Sign_upState extends State<Sign_up> {
                           onPressed: () async{
                             if(_formKey.currentState!.validate()){
                               //   setState(() => loading = true);
-                              dynamic result = await _auth.registerWEP(email, password,First_name, Last_name, Phone_number);
-                              // if(result == null){
-                              //   setState((){ error ='please supply a valid email';
-                              //     //     loading = false;
-                              //   });
-                              // }
+                              dynamic result = await _auth.registerWEP(email, password);
+                              if(result == null){
+                                setState((){ error ='please supply a valid email';
+                                  //     loading = false;
+                                });
+                              } else {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            referalcheck()));
+                              }
                             }
                           }
                       ),

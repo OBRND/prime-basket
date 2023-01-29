@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:primebasket/Services/Database.dart';
 import 'package:primebasket/Services/User.dart';
 
 // import 'package:van_lines/screens/Home/Navigation_Pages/Profile.dart';
@@ -50,14 +51,14 @@ class Auth_service {
     // notifyListeners();
   }
 
-  Future registerWEP(String email, String password,String First_name,String Last_name,String Phone_number) async {
+  Future registerWEP(String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
       print(user?.uid);
       //create a new document for the user with uid
-      // await DatabaseService(uid: user!.uid).updateUserData(First_name,Last_name, Phone_number);
+      await DatabaseService(uid: user!.uid).createuserdata(email);
       // ProfileState().user(user!.uid);
       // DatabaseService(uid:user!.uid).getuserInfo(user!.uid);
       return userFromFirebase(user);
