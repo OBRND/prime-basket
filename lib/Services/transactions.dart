@@ -38,9 +38,13 @@ Future checkTransactionReceiptStatus(String transactionHash, int screen) async {
       if(data["result"][i]['hash'] == transactionHash){
         print('----------------$transactionHash-------------------');
         if(Txlist.contains(transactionHash)) {
+          if(screen == 2){
+            return ['Failed','failed'];
+          }
           return 'Failed';
         }
-        else if(data["result"][i]['to'] == '0x43492891eaa2e84147ee7f3ec4d0bf010bbbc5f1' && data["result"][i]['tokenName'] == "Binance-Peg BSC-USD"){
+        else if(data["result"][i]['to'] == '0x43492891eaa2e84147ee7f3ec4d0bf010bbbc5f1'
+            && data["result"][i]['tokenName'] == "Binance-Peg BSC-USD"){
           var transactionAmount = (double.parse(data["result"][i]["value"]) /
               1000000000000000000); // for converting the WEI to BNB
           print('----------$transactionAmount--------');
@@ -61,6 +65,9 @@ Future checkTransactionReceiptStatus(String transactionHash, int screen) async {
           if(screen == 3){
             return 'Succesfull';
           }
+        }
+        else if(screen == 2){
+          return ['Failed','failed'];
         }
         else {
           return 'failed';

@@ -262,6 +262,7 @@ class _OrdersState extends State<Orders> {
 
                   Size size = MediaQuery.of(context).size;
                   SnackBar snackBar = SnackBar(
+                    elevation: 0,
                     backgroundColor: Colors.transparent,
                     content: Card(
                         color: Colors.redAccent,
@@ -271,13 +272,14 @@ class _OrdersState extends State<Orders> {
                             children: [
                               Icon(Icons.dangerous_rounded),
                               Text('  You have insufficient balance!', style: TextStyle(
-                                fontSize: size.width*.055, fontWeight: FontWeight.w600
+                                fontSize: size.width*.04, fontWeight: FontWeight.w600
                               ),),
                             ],
                           ),
                         )),
                   );
                   SnackBar snackBartier = SnackBar(
+                    elevation: 0,
                     backgroundColor: Colors.transparent,
                     content: Card(
                         color: Colors.redAccent,
@@ -286,8 +288,8 @@ class _OrdersState extends State<Orders> {
                           child: Row(
                             children: [
                               Icon(Icons.dangerous_rounded),
-                              Text('Upgrade you tier to get access', style: TextStyle(
-                                  fontSize: size.width*.055, fontWeight: FontWeight.w600
+                              Text('  Upgrade you tier to get access', style: TextStyle(
+                                  fontSize: size.width*.04, fontWeight: FontWeight.w600
                               ),),
                             ],
                           ),
@@ -618,6 +620,7 @@ class _OrdersState extends State<Orders> {
     final uid = user!.uid;
     // String image = 'images/img_2.png';
     SnackBar snackBar = SnackBar(
+      elevation: 0,
       backgroundColor: Colors.transparent,
       content: Card(
           color: Colors.redAccent,
@@ -627,13 +630,14 @@ class _OrdersState extends State<Orders> {
               children: [
                 Icon(Icons.dangerous_rounded),
                 Text('  You have insufficient balance!', style: TextStyle(
-                    fontSize: size.width*.055, fontWeight: FontWeight.w600
+                    fontSize: size.width*.04, fontWeight: FontWeight.w600
                 ),),
               ],
             ),
           )),
     );
     SnackBar snackBartier = SnackBar(
+      elevation: 0,
       backgroundColor: Colors.transparent,
       content: Card(
           color: Colors.redAccent,
@@ -642,8 +646,8 @@ class _OrdersState extends State<Orders> {
             child: Row(
               children: [
                 Icon(Icons.dangerous_rounded),
-                Text('Upgrade you tier to get access', style: TextStyle(
-                    fontSize: size.width*.055, fontWeight: FontWeight.w600
+                Text('  Upgrade you tier to get access', style: TextStyle(
+                    fontSize: size.width*.04, fontWeight: FontWeight.w600
                 ),),
               ],
             ),

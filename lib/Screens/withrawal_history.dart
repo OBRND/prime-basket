@@ -80,116 +80,228 @@ class _WithdrawalhistoryPageState extends State<WithdrawalhistoryPage> {
                     ));
                   default:
                     List<Widget> list = <Widget>[];
-                    for(var i = 0; i < snapshot.data.length; i++) {
-                      list.add(snapshot.data[i].time == '-' && snapshot.data[i].status != '-'? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Divider(
-                            color: Colors.black54,
-                            thickness: 3,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Text('Est. earinigs', style: style.copyWith(fontSize: 18),),
-                          ),
-                          Card(
-                            color: Colors.white,
-                            elevation: 1,
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(5.0),
+                    if(snapshot.data.toString().isEmpty){
+                      list.add(Text('No deposit or withdrawal has been made'));
+                    }else {
+                        for (var i = 0; i < snapshot.data.length; i++) {
+                          list.add(snapshot.data[i].time == '-' &&
+                                  snapshot.data[i].status != '-'
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Card(
+                                      color: Colors.white,
+                                      elevation: 1,
                                       child: Center(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                        child: Column(
                                           children: [
-                                            Text('\$${double.parse(snapshot.data[i].amount).toStringAsFixed(2)} ', style: style.copyWith(fontSize: 22, color: Colors.black87, fontWeight: FontWeight.w700),),
-                                            Text(snapshot.data[i].status == 'processing' ? 'has been added to Est. earinigs.': snapshot.data[i].status == 'Delivered' ?
-                                            'has been added to actual earnings' : 'has been removed from Est. earnings' ,
-                                                style:(snapshot.data[i].status == 'processing' ? style.copyWith(fontSize:18, color: Color(
-                                                    0xffb69d1c),  fontWeight: FontWeight.w400) :
-                                                snapshot.data[i].status == 'Delivered' ? style.copyWith(fontSize:18, color: Colors.lightGreen,  fontWeight: FontWeight.w400) :
-                                                style.copyWith(fontSize:18, color: Colors.red,  fontWeight: FontWeight.w400)),),
-                                          ],),
+                                            Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Center(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        '\$${double.parse(snapshot.data[i].amount).toStringAsFixed(2)} ',
+                                                        style: style.copyWith(
+                                                            fontSize: 22,
+                                                            color: snapshot
+                                                                        .data[i]
+                                                                        .status ==
+                                                                    'processing'
+                                                                ? Colors.amber
+                                                                : snapshot
+                                                                            .data[
+                                                                                i]
+                                                                            .status ==
+                                                                        'Delivered'
+                                                                    ? Colors
+                                                                        .green
+                                                                    : Colors
+                                                                        .red,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      ),
+                                                      Text(
+                                                        snapshot.data[i]
+                                                                    .status ==
+                                                                'processing'
+                                                            ? 'has been added to Est. earnings.'
+                                                            : snapshot.data[i]
+                                                                        .status ==
+                                                                    'Delivered'
+                                                                ? 'has been added to Actual Earnings'
+                                                                : 'has been removed from Est. earnings',
+                                                        style: (snapshot.data[i]
+                                                                    .status ==
+                                                                'processing'
+                                                            ? style.copyWith(
+                                                                fontSize: 18,
+                                                                color: Colors
+                                                                    .amber,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400)
+                                                            : snapshot.data[i]
+                                                                        .status ==
+                                                                    'Delivered'
+                                                                ? style.copyWith(
+                                                                    fontSize:
+                                                                        18,
+                                                                    color: Colors
+                                                                        .lightGreen,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400)
+                                                                : style.copyWith(
+                                                                    fontSize:
+                                                                        18,
+                                                                    color: Colors
+                                                                        .red,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ) : snapshot.data[i].status == '-'? Card(
-                        color: Colors.white,
-                        elevation: 0,
-                        child: Center(
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Center(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Text('You have a top up of ',
-                                                style: style.copyWith(fontSize:16, color: Color(0xff282727),  fontWeight: FontWeight.w400)),
-                                            Text('\$${double.parse(snapshot.data[i].amount).toStringAsFixed(2)}', style: style.copyWith(fontSize: 22, color: Colors.black87, fontWeight: FontWeight.w700),),
-                                          ],),
-                                        Text(' on ${snapshot.data[i].time}', style: style.copyWith(fontSize: 15),),
-
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ) :
-
-                      Card(
-                        color: Colors.white,
-                        elevation: 0,
-                        child: Center(
-                          child: Column(
-                            children: [
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text('You have a ${snapshot.data[i].status} withdrawal of ',
-                                            style: style.copyWith(fontSize:16, color: Color(0xff282727),  fontWeight: FontWeight.w400)),
-                                        Text('\$${(snapshot.data[i].amount).toStringAsFixed(2)}', style: style.copyWith(fontSize: 20, color: Colors.black87, fontWeight: FontWeight.w700),),
-                                      ],),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Wrap(
-                                  runSpacing: 15,
-                                  children: [
-                                    Text(" on ${snapshot.data[i].time}", style: style.copyWith(fontSize: 15),),
                                   ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ));
-                    }
-                    return SingleChildScrollView(
+                                )
+                              : snapshot.data[i].status == '-'
+                                  ? Card(
+                                      color: Colors.white,
+                                      elevation: 0,
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Center(
+                                                  child: Column(
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                              'You have a top up of ',
+                                                              style: style.copyWith(
+                                                                  fontSize: 16,
+                                                                  color: Color(
+                                                                      0xff282727),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400)),
+                                                          Text(
+                                                            '\$${double.parse(snapshot.data[i].amount).toStringAsFixed(2)}',
+                                                            style: style.copyWith(
+                                                                fontSize: 22,
+                                                                color: Colors
+                                                                    .black87,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Text(
+                                                        ' on ${snapshot.data[i].time}',
+                                                        style: style.copyWith(
+                                                            fontSize: 15),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  : Card(
+                                      color: Colors.white,
+                                      elevation: 0,
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(5.0),
+                                                child: Center(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                          'You have a ${snapshot.data[i].status} withdrawal of ',
+                                                          style: style.copyWith(
+                                                              fontSize: 16,
+                                                              color: Color(
+                                                                  0xff282727),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400)),
+                                                      Text(
+                                                        '\$${(snapshot.data[i].amount).toStringAsFixed(2)}',
+                                                        style: style.copyWith(
+                                                            fontSize: 20,
+                                                            color:
+                                                                Colors.black87,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w700),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: Wrap(
+                                                runSpacing: 15,
+                                                children: [
+                                                  Text(
+                                                    " on ${snapshot.data[i].time}",
+                                                    style: style.copyWith(
+                                                        fontSize: 15),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ));
+                        }
+                      }
+                      return SingleChildScrollView(
                       child: Container(
                         width: MediaQuery.of(context).size.width*.9,
                         child: new Column(

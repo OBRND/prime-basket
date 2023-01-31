@@ -154,7 +154,7 @@ class HomePage extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                SizedBox(width: size.width*.7,),
+                                SizedBox(width: size.width*.64,),
                                 Row(
                                   children: [
                                     Text("Tier ", style: TextStyle(

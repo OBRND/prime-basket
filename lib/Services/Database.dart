@@ -190,16 +190,31 @@ class DatabaseService{
     }
     Future getearnings() async{
     List allestearnings = [];
+    final query = await  orderscollection.where('email', isEqualTo: uid).where("status", isEqualTo: "cancelled");
+   var qury =  await query.get();
+   var m = qury.docs;
+    print('this failed: ${m}');
     List orderIDs = await getOrderID();
-    for(int i=0; i < orderIDs.length; i++) {
-      DocumentSnapshot orderEsts = await orderscollection.doc(orderIDs[i]).get();
-      String earn = orderEsts['earnings'];
-      String status = orderEsts['status'];
-      allestearnings.add(withdrawalhistory(amount: earn, status: status, time: '-', tobeesorted: DateTime(2023)));
-
+    if( orderIDs.isEmpty){
+      return allestearnings;
     }
-    return allestearnings;
+    else {
+      for (int i = 0; i < orderIDs.length; i++) {
+        DocumentSnapshot orderEsts =
+            await orderscollection.doc(orderIDs[i]).get();
+        String earn = orderEsts['earnings'];
+        String status = orderEsts['status'];
+        print('$i '
+            '$status');
+        allestearnings.add(withdrawalhistory(
+            amount: earn,
+            status: status,
+            time: '-',
+            tobeesorted: DateTime(2023)));
+      }
+      return allestearnings;
     }
+  }
 
     Future settxnhash(chatID, String txnhash, String amount) async{
       await chats.doc('$chatID').update({
@@ -478,6 +493,8 @@ class DatabaseService{
     for(int i=0; i < orderId.length; i++) {
       String x = orderId[i];
       DocumentSnapshot getuserorder = await orderscollection.doc('$x').get();
+      var o = getuserorder['deliveredQty'];
+      print('$i $o');
       // print('*****qty: ${getuserorder['deliveredQty']}, earnings: ${getuserorder['earnings']},pName: ${getuserorder['productName']}, total: ${getuserorder['totalAmount']}, Status: ${getuserorder['status']}');
       orderModel singleorder = orderModel(qty: getuserorder['deliveredQty'], earnings: getuserorder['earnings'], pName: getuserorder['productName'], total: getuserorder['totalAmount'], Status: getuserorder['status']);
       // print(singleorder);

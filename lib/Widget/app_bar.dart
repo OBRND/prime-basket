@@ -28,21 +28,26 @@ class AppBarWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 4, bottom: 6, right: 3),
               child: CircleAvatar(
-                radius: 18,
-                backgroundImage: user.photoURL == null ? null : NetworkImage(user.photoURL!),
+                radius: 28,
+                backgroundColor: Colors.transparent,
+                backgroundImage: AssetImage('images/img_4.png'),
+                // backgroundImage: user.photoURL == null ? null : NetworkImage(user.photoURL!),
               ),
             ),
           ),
           // SizedBox(width: size.width*.1,),
-          Text('Prime Basket',
-              style: GoogleFonts.courgette(
-                textStyle: TextStyle(color: Color(0xff353536), fontSize: 28, fontWeight: FontWeight.w700 ),)),
+          Container(
+              height: 28,
+              child: Image.asset('images/img_3.png')),
+          // Text('Prime Basket',
+          //     style: GoogleFonts.courgette(
+          //       textStyle: TextStyle(color: Color(0xff353536), fontSize: 28, fontWeight: FontWeight.w700 ),)),
 
          IconButton(onPressed: (){
            Navigator.of(context).push(MaterialPageRoute(
                    builder: (context) => NotifPage()));
          },
-          icon: Icon(Icons.notifications_active, color: Color(0xff3f3f41),),
+          icon: Icon(Icons.notifications_active, color: Color(0xff168c16),),
           iconSize: 28,)
 
           // Image.asset('images/Logotext.png', width: size.width*0.6,),

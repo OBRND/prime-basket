@@ -11,12 +11,11 @@ class Tierpage extends StatelessWidget {
       appBar: AppBar(
         elevation: .5,
         backgroundColor: Colors.transparent,
-        title: Center(child: Text('Tier system', style: TextStyle(fontSize: 25, color: Colors.black54, fontWeight: FontWeight.w400),)),
+        title: Text('Tier system', style: TextStyle(fontSize: 25, color: Colors.black54, fontWeight: FontWeight.w400),),
       ),
       bottomNavigationBar: bottomtabwidget(),
       body: Padding(
-
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 40),
         child: Image.asset('images/tier.png'),
       ),
     );
