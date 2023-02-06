@@ -83,39 +83,49 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: size.width*0.15, vertical: size.height*0.05),
-                      child: ElevatedButton(
-                        onPressed: () async{
-                          if(_formkey.currentState!.validate()){
-                            // setState(() => loading = true);
-                            dynamic result = await _auth.Signin_WEP(email, password);
-                            // Navigator.push(context, new MaterialPageRoute(builder: (context) => new Profile(result: new result("Priyank","28"))));
-                            if(result == null){
-                              setState(() {
-                                error = 'Could not sign in with those credentials';
-                                // loading = false;
-                              });
-                            }
-                            if(result != null){
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                  builder: (context) => BottomTab(index: 0)));
-                            }
-                          }
-                          // Navigator.pushNamed(context, '/Bottomnavigation');
-                        },
-                        style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  // side: BorderSide(color: Colors.black54),
-                                )
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25.0),
+                          gradient: const LinearGradient(
+                              colors: [
+                                Color(0xfff6ad16),
+                                Colors.amberAccent,
+                              ]),
+                        ),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
                             ),
-                            backgroundColor: MaterialStateColor.resolveWith((states) => Colors.amber)),
-                        child: Center(
-                            child: Text("Login",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 22),)),
+                            elevation: 0,
+                            backgroundColor: Colors.transparent,
+                            minimumSize: Size.fromHeight(50),),
+                          onPressed: () async{
+                            if(_formkey.currentState!.validate()){
+                              // setState(() => loading = true);
+                              dynamic result = await _auth.Signin_WEP(email, password);
+                              // Navigator.push(context, new MaterialPageRoute(builder: (context) => new Profile(result: new result("Priyank","28"))));
+                              if(result == null){
+                                setState(() {
+                                  error = 'Could not sign in with those credentials';
+                                  // loading = false;
+                                });
+                              }
+                              if(result != null){
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                    builder: (context) => BottomTab(index: 0)));
+                              }
+                            }
+                            // Navigator.pushNamed(context, '/Bottomnavigation');
+                          },
+                          child: Center(
+                              child: Text("Login",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 22),)),
+                        ),
                       ),
                     ),
                   ],
@@ -124,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
 
-              Text("Or", style: TextStyle(fontSize: size.width*0.07, fontWeight: FontWeight.w400),),
+              Text("OR", style: TextStyle(fontSize: size.width*0.07, fontWeight: FontWeight.w400),),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width*0.15, vertical: size.height*0.05),
                 child:ElevatedButton(

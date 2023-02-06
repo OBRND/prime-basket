@@ -32,122 +32,88 @@ class _Sign_upState extends State<Sign_up> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      backgroundColor: Colors.white60,
+      backgroundColor: Colors.white,
       // backgroundColor: Colors.deepPurple,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text('Sign up to Prime Basket', style: TextStyle(fontSize: 24),),
-      ),
-      body: Stack(
-
-        children:[
-          Positioned(
-            top: -60,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: MediaQuery.of(context).size.height*0.4,
-              decoration: const BoxDecoration(
-                color: Color(0xff323757),
-                borderRadius: BorderRadius.only(bottomLeft : Radius.circular(30), bottomRight : Radius.circular(30)),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 100),
+        child: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal:20),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text('Register', style: TextStyle(fontSize: 24),),
+                  ),
+                  SizedBox( height: 10),
+                  TextFormField(
+                      decoration: textinputdecoration.copyWith(hintText: 'Email'),
+                      validator: (val) => val!.isEmpty ? 'Enter an email' : null,
+                      onChanged: (val){
+                        setState(() => email = val);
+                      }
+                  ),
+                  SizedBox( height: 10),
+                  TextFormField(
+                      decoration: textinputdecoration.copyWith(hintText: 'Password'),
+                      validator: (val) => val!.length < 6 ? 'Enter password more that 6 characters' : null,
+                      obscureText: true,
+                      onChanged: (val){
+                        setState(() => password = val);
+                      }
+                  ),
+                  SizedBox( height: 30),
+                  Container(
+                    width: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.0),
+                      gradient: const LinearGradient(
+                          colors: [
+                            Color(0xfff6ad16),
+                            Colors.amberAccent,
+                          ]),
+                    ),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          elevation: 0,
+                          backgroundColor: Colors.transparent,
+                          minimumSize: Size.fromHeight(50),),
+                        child: Text("Register",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () async{
+                          if(_formKey.currentState!.validate()){
+                            //   setState(() => loading = true);
+                            dynamic result = await _auth.registerWEP(email, password);
+                            if(result == null){
+                              setState((){ error ='please supply a valid email';
+                                //     loading = false;
+                              });
+                            } else {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          referalcheck()));
+                            }
+                          }
+                        }
+                    ),
+                  ),
+                  SizedBox( height: 20),
+                  Text(error,
+                      style: TextStyle(color: Colors.red)
+                  )
+                ],
               ),
             ),
           ),
-
-          Padding(
-            padding: const EdgeInsets.only(top: 100),
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal:20),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox( height: 10),
-                      TextFormField(
-                          decoration: textinputdecoration.copyWith(hintText: 'Email'),
-                          validator: (val) => val!.isEmpty ? 'Enter an email' : null,
-                          onChanged: (val){
-                            setState(() => email = val);
-                          }
-                      ),
-                      SizedBox( height: 10),
-                      TextFormField(
-                          decoration: textinputdecoration.copyWith(hintText: 'Password'),
-                          validator: (val) => val!.length < 6 ? 'Enter password more that 6 characters' : null,
-                          obscureText: true,
-                          onChanged: (val){
-                            setState(() => password = val);
-                          }
-                      ),
-                      // SizedBox( height: 10),
-                      // TextFormField(
-                      //     decoration: textinputdecoration.copyWith(hintText: 'First Name'),
-                      //     validator: (val) => val!.isEmpty ? 'Enter First' : null,
-                      //     onChanged: (val){
-                      //       setState(() => First_name = val);
-                      //     }
-                      // ),
-                      // SizedBox( height: 10),
-                      // TextFormField(
-                      //     decoration: textinputdecoration.copyWith(hintText: 'Last Name'),
-                      //     validator: (val) => val!.isEmpty ? 'Enter Last name' : null,
-                      //     onChanged: (val){
-                      //       setState(() => Last_name = val);
-                      //     }
-                      // ),
-                      // SizedBox( height: 10),
-                      // TextFormField(
-                      //     keyboardType: TextInputType.number,
-                      //     inputFormatters: <TextInputFormatter>[
-                      //       FilteringTextInputFormatter.digitsOnly
-                      //     ],
-                      //     decoration: textinputdecoration.copyWith(hintText: 'Phone number'),
-                      //     validator: (val) => val!.length == 10 ?   null : 'Please enter a 10 digit phone number ',
-                      //     onChanged: (val){
-                      //       setState(() => Phone_number = val );
-                      //     }
-                      // ),
-                      SizedBox( height: 10),
-                      ElevatedButton(
-                          style: ButtonStyle(
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.white54),)),
-                              backgroundColor: MaterialStateColor.resolveWith((states) => Colors.blueAccent)),
-                          child: Text("Register",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () async{
-                            if(_formKey.currentState!.validate()){
-                              //   setState(() => loading = true);
-                              dynamic result = await _auth.registerWEP(email, password);
-                              if(result == null){
-                                setState((){ error ='please supply a valid email';
-                                  //     loading = false;
-                                });
-                              } else {
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            referalcheck()));
-                              }
-                            }
-                          }
-                      ),
-                      SizedBox( height: 20),
-                      Text(error,
-                          style: TextStyle(color: Colors.red)
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          )],
+        ),
       ),
       //   );
       // }

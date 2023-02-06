@@ -43,11 +43,6 @@ class _WithdrawalpageState extends State<Withdrawalpage> {
               children: [
                 Stack(
                     children: [
-                      Container(
-                        color: Color(0xff4a4b9f),
-                        height: size.width * 0.5,
-                        width: size.width,
-                      ),
                       Column(
                           children: [
                             Padding(padding: EdgeInsets.symmetric(
@@ -58,8 +53,8 @@ class _WithdrawalpageState extends State<Withdrawalpage> {
                                     .height * 0.008),
                                 child: Center(child: Text("Withdraw",
                                   style: TextStyle(fontSize: size.width * .05,
-                                      color: Colors.white70,
-                                      fontWeight: FontWeight.w500),)),
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),)),
                               ),
                             ),
                             SizedBox(height: size.height * 0.01,),
@@ -176,13 +171,13 @@ class _WithdrawalpageState extends State<Withdrawalpage> {
                     padding: const EdgeInsets.all(20.0),
                     child: RichText(
                       text: TextSpan(
-                        style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w400, fontSize: 16),
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 16),
                           children:[
                             TextSpan(
-                                text: 'Withdrawals are charged with 20% services and proccessing fees. '),
-                            TextSpan(text: 'A minimum of \$20 per withdrawal request. '),
-                            TextSpan(text: 'Bank of mobile wallet withdrawals will take upto 3 days to complete.'),
-                            TextSpan(text: 'Bank charges apply.'),
+                                text: 'Withdrawals are charged with 20% service and processing fees. '),
+                            TextSpan(text: 'Minimum of \$20 per withdrawal request. '),
+                            TextSpan(text: 'Bank and mobile wallet withdrawals will take upto 3 days to complete. Bank charges apply. '),
+                            TextSpan(text: 'Withdrawals through Binance or Metamask will take upto 24 hours to complete. Gas charges apply.'),
                           ]
                       ),
                     ),

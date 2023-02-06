@@ -54,6 +54,7 @@ dependencies:
   firebase_storage: ^11.0.10
   file_picker: ^5.2.4
   android_intent_plus: ^3.1.5
+  social_share_plugin: ^0.4.1+2
 
 dev_dependencies:
   flutter_test:

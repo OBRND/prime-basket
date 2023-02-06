@@ -27,6 +27,7 @@ class _P2pTadingPageState extends State<P2pTadingPage> {
   late String selectedcurrency = '';
   late DropDownValueModel selectedbank = DropDownValueModel(name: '', value: 'value0');
   var list  = const [
+    DropDownValueModel(name: ' ', value: "value0"),
     DropDownValueModel(name: 'ABA', value: "value1"),
     DropDownValueModel(name: 'A-Bank', value: "value2"),
     DropDownValueModel(name: 'Abyssinia', value: "value3"),
@@ -248,6 +249,13 @@ class _P2pTadingPageState extends State<P2pTadingPage> {
                   decoration: textinputdecoration.copyWith(
                     contentPadding: EdgeInsets.symmetric(horizontal: size.width*0.03, vertical: size.height*0.02),
                     labelText: selectedcurrency == '' ? "Select Currency:" : '${selectedcurrency}',
+                    suffixIcon: Padding(
+                      padding: EdgeInsets.all(0.0),
+                      child: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.grey,
+                      ), // icon is 48px widget.
+                    ),
                   ),
                 ),
               ),
@@ -255,7 +263,7 @@ class _P2pTadingPageState extends State<P2pTadingPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: DropDownTextField(
                   textFieldDecoration: textinputdecoration.copyWith(
-                      hintText: 'select a bank', hintStyle: TextStyle(fontWeight: FontWeight.w300, fontSize: 20)),
+                      hintText: 'Select Bank/Wallet', hintStyle: TextStyle(fontWeight: FontWeight.w300, fontSize: 20)),
                   // initialValue: "name4",
                   listSpace: 20,
                   listPadding: ListPadding(top: 20),
@@ -301,7 +309,14 @@ class _P2pTadingPageState extends State<P2pTadingPage> {
               controller: myController[1],
             ),
           ),
-              TextButton(
+              Row(
+                children: [
+                  SizedBox(width: 15,),
+                Container (
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 3, color:Color(0xff191970)),
+                    ),
+                    child: TextButton(
                 onPressed: (){
                     Map l = {
                       'accountNumber': myController[1].text,
@@ -310,22 +325,34 @@ class _P2pTadingPageState extends State<P2pTadingPage> {
                       'walletAddress': myController[0].text,
                     };
                     alldata.putIfAbsent('${alldata.length}', () => l);
+                    print('jjjjjjjjjjj$alldata');
                     setState(() {
-                      selectedbank = DropDownValueModel(name: '', value: 'value0');
+                      selectedbank = DropDownValueModel(name: ' '
+                          '', value: 'value0');
                       selectedcurrency = '';
                       myController[0].text = '';
                       myController[1].text = '';
                     });
                 },
-                child: Row(
+                child: Container (
+                  width: 80,
+                  height: 25,
+                  decoration: BoxDecoration(
+                    // borderRadius: BorderRadius.circular(25.0),
+                    color: Colors.transparent,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(width: size.width*0.05,),
-                    Icon(Icons.add,color: const Color(0xff191970),size: size.width*0.07,),
-                    Text("Add", style: TextStyle(fontWeight: FontWeight.w400,
-                        fontSize: size.width*0.06, color: const Color(0xff191970)),)
+                    // SizedBox(width: size.width*0.05,),
+                    Icon(Icons.add,color: const Color(0xff191970),size: 28,),
+                    Text("Add", style: TextStyle(fontWeight: FontWeight.w500,
+                        fontSize: 23, color: const Color(0xff191970)),)
                   ],
-                ),
-              ),
+                ),)
+              )),
+              SizedBox(width: MediaQuery.of(context).size.width*.7,)
+              ],),
               SizedBox(height:size.height*0.01),
               Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -335,20 +362,27 @@ class _P2pTadingPageState extends State<P2pTadingPage> {
 
               isinitiated ? Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width*0.35),
-                    child: ElevatedButton(onPressed: (){
+                  Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25.0),
+                          gradient: const LinearGradient(
+                              colors: [
+                                Colors.blueAccent,
+                                Colors.lightBlue]),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: (){
                       final user = Provider.of<UserFB?>(context, listen: false);
                       if(_formkey.currentState!.validate()) {
-                        for (int i = 0; i < datalist.length; i++) {
+                        // for (int i = 0; i < datalist.length; i++) {
                           Map l = {
                             'accountNumber': myController[0].text,
                             'bankOrWallet': selectedbank.name,
                             'country': selectedcurrency,
                             'walletAddress': myController[1].text,
                           };
-                          alldata.putIfAbsent('$i', () => l);
-                        }
+                          alldata.putIfAbsent('${alldata.length + 1}', () => l);
+                        // }
                         DatabaseService(uid: user!.uid).addnewagent(alldata);
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => P2PAgentPage()));
@@ -358,12 +392,23 @@ class _P2pTadingPageState extends State<P2pTadingPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        elevation: 5,
-                        backgroundColor: Colors.blue,
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
                       ),
-                      child: Text("Submit",style: TextStyle(fontSize: 20, color: Colors.white),),),
-                  ),
-                  ElevatedButton(onPressed: (){
+                      child: Padding(
+                        padding: EdgeInsets.all(11),
+                        child: Text("Submit",style: TextStyle(fontSize: 20, color: Colors.white),),))),
+                  SizedBox(height: 10,),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.0),
+                      gradient: const LinearGradient(
+                          colors: [
+                            Color(0xfff6ad16),
+                            Colors.amberAccent,
+                          ]),
+                    ),
+                    child: ElevatedButton(onPressed: (){
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => P2PAgentPage()));
                   },
@@ -371,16 +416,27 @@ class _P2pTadingPageState extends State<P2pTadingPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        elevation: 5,
-                        backgroundColor: Colors.amber,
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
                     ),
-                    child: Text("Start/Resume trade",style: TextStyle(fontSize: 20, color: Colors.white),),),
-                ],
+                    child: Padding(
+                      padding: EdgeInsets.all(11),
+                        child: Text("Start/Resume trade",style: TextStyle(fontSize: 20, color: Colors.white),)),),
+                  ),],
               ):
 
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: size.width*0.35),
-                child: ElevatedButton(onPressed: (){
+                padding: EdgeInsets.symmetric(horizontal: size.width*0.2,),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25.0),
+                    gradient: const LinearGradient(
+                        colors: [
+                          Colors.blueAccent,
+                          Colors.lightBlue]),
+                  ),
+                  child: ElevatedButton(
+                  onPressed: (){
                   if(_formkey.currentState!.validate()) {
                     final user = Provider.of<UserFB?>(context, listen: false);
                     for(int i = 0; i < datalist.length; i++){
@@ -402,11 +458,13 @@ class _P2pTadingPageState extends State<P2pTadingPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
                     ),
-                    elevation: 5,
-                    backgroundColor: Colors.blue,
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
                   ),
-                child: Text("Submit",
-                  style: TextStyle(fontSize: 20, color: Colors.white),),),
+                child: Padding(
+                    padding: EdgeInsets.all(11),
+                    child: Text("Submit",
+                  style: TextStyle(fontSize: 20, color: Colors.white),)),),)
               )
 
             ]),

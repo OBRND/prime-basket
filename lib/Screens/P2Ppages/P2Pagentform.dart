@@ -258,7 +258,14 @@ class _P2PAgentPageState extends State<P2PAgentPage> {
                   decoration: textinputdecoration.copyWith(
                       hintStyle: TextStyle(fontWeight: FontWeight.w300, fontSize: 20),
                       contentPadding: EdgeInsets.symmetric(horizontal: size.width*0.01, vertical: size.height*0.02),
-                    labelText: selectedcurrency == '' ? "  Select a Currency" : '${selectedcurrency}',
+                    labelText: selectedcurrency == '' ? "  Select Currency" : '${selectedcurrency}',
+                    suffixIcon: Padding(
+                      padding: EdgeInsets.all(0.0),
+                      child: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.grey,
+                      ), // icon is 48px widget.
+                    ),
                   ),
                 ),
               ),
@@ -268,7 +275,7 @@ class _P2PAgentPageState extends State<P2PAgentPage> {
                   // initialValue: "name4",
                   textFieldDecoration: textinputdecoration.copyWith(
                       hintStyle: TextStyle(fontWeight: FontWeight.w300, fontSize: 20),
-                      hintText: 'Select a bank or wallet'
+                      hintText: 'Select Bank/Wallet'
                   ),
                   listSpace: 20,
                   listPadding: ListPadding(top: 20),
@@ -285,7 +292,14 @@ class _P2PAgentPageState extends State<P2PAgentPage> {
                   },
                 ),
               ),
-              TextButton(
+              Row(
+                children:[
+                  SizedBox(width: 15,),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 3, color:Color(0xff191970)),
+                  ),
+                child: TextButton(
                 onPressed: (){
                   setState(() {
                 traderdata.add([
@@ -301,24 +315,32 @@ class _P2PAgentPageState extends State<P2PAgentPage> {
             },
                 child: Row(
                   children: [
-                    SizedBox(width: size.width*0.05,),
-                    Icon(Icons.add,color: const Color(0xff191970),size: size.width*0.07,),
-                    Text("Add",style: TextStyle(fontWeight: FontWeight.w400,
-                        fontSize: size.width*0.06, color: const Color(0xff191970)))
+                    // SizedBox(width: size.width*0.05,),
+                    Icon(Icons.add,color: const Color(0xff191970),size: 27,),
+                    Text("Add",style: TextStyle(fontWeight: FontWeight.w500,
+                        fontSize: 23, color: const Color(0xff191970)))
                   ],
                 ),
-              ),
+              ),),
+                  SizedBox(width: MediaQuery.of(context).size.width *.6,),]),
               SizedBox(height:size.height*0.01),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text("Do You have a Binance or metamask wallet?",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),),
               ),
+              SizedBox(height: 10),
               isinitiated ? Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width*0.35),
-                    child: ElevatedButton(onPressed: () async{
+                  Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25.0),
+                          gradient: const LinearGradient(
+                              colors: [
+                                Colors.blueAccent,
+                                Colors.lightBlue]),
+                        ),
+                        child: ElevatedButton(onPressed: () async{
                       final user = Provider.of<UserFB?>(context, listen: false);
                       if(_formkey.currentState!.validate()){
                         if(traderdata.isEmpty){
@@ -327,11 +349,14 @@ class _P2PAgentPageState extends State<P2PAgentPage> {
                               selectedcurrency);
                         }
                           else {
-                              for (int i = 0; i < traderdata.length; i++) {
+                              for (int i = 0; i <= traderdata.length ; i++) {
                                 DatabaseService(uid: user!.uid).addtrader(
                                     traderdata[i][0],
                                     traderdata[i][1],
                                     traderdata[i][2]);
+                                DatabaseService(uid: user!.uid).addtrader(
+                                    int.parse(myController.text), selectedbank.name,
+                                    selectedcurrency);
                               }
                             }
                             Navigator.of(context).push(MaterialPageRoute(
@@ -343,12 +368,23 @@ class _P2PAgentPageState extends State<P2PAgentPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25),
                         ),
-                        elevation: 5,
-                        backgroundColor: Colors.blue,
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
                       ),
-                      child: Text("Submit",style: TextStyle(fontSize: 20, color: Colors.white),),),
-                  ),
-                  ElevatedButton(onPressed: (){
+                      child: Padding (
+                        padding: EdgeInsets.all(11),
+                        child: Text("Submit",style: TextStyle(fontSize: 20, color: Colors.white),),))),
+                  SizedBox(height: 10),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.0),
+                      gradient: const LinearGradient(
+                          colors: [
+                            Color(0xfff6ad16),
+                            Colors.amberAccent,
+                          ]),
+                    ),
+                    child: ElevatedButton(onPressed: (){
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => trades(currency: 'Any')));
                       },
@@ -356,14 +392,25 @@ class _P2PAgentPageState extends State<P2PAgentPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
-                      elevation: 5,
-                      backgroundColor: Colors.amber,
+                      elevation: 0,
+                      backgroundColor: Colors.transparent,
                     ),
-                      child: Text("Resume trade",style: TextStyle(fontSize: 20, color: Colors.white),),),
+                      child: Padding(
+                        padding: EdgeInsets.all(11),
+                        child: Text("Resume trade",style: TextStyle(fontSize: 20, color: Colors.white),),)),)
                 ],) :
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: size.width*0.35),
-                child: ElevatedButton(onPressed: (){
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25.0),
+                    gradient: const LinearGradient(
+                        colors: [
+                          Colors.blueAccent,
+                          Colors.lightBlue
+                        ]),
+                  ),
+                  child: ElevatedButton(onPressed: (){
                   final user = Provider.of<UserFB?>(context, listen: false);
                   if(_formkey.currentState!.validate()) {
                     if(traderdata.isEmpty){
@@ -387,10 +434,10 @@ class _P2PAgentPageState extends State<P2PAgentPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),
                     ),
-                    elevation: 5,
-                    backgroundColor: Colors.blue,
+                    elevation: 0,
+                    backgroundColor: Colors.transparent,
                   ),
-                  child: Text("Submit",style: TextStyle(fontSize: 20, color: Colors.white),),),
+                  child: Text("Submit",style: TextStyle(fontSize: 20, color: Colors.white),),),)
               ),
             ]),
       ),

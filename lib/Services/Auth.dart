@@ -42,6 +42,7 @@ class Auth_service {
       UserCredential result =
           await FirebaseAuth.instance.signInWithCredential(credential);
       User? user = result.user;
+      await DatabaseService(uid: user!.uid).createuserdata(user.email!);
       return userFromFirebase(user);
     } catch(e){
       print(e.toString());

@@ -165,7 +165,7 @@ class _mobiwalletwithdrawState extends State<mobiwalletwithdraw> {
     DropDownValueModel(name: 'ZEN', value: "value8"),
     DropDownValueModel(name: 'Ziraat', value: "value8"),
   ];
- late String balance = '';
+ late String balance = '0';
   String Countrytext = 'Select country';
 
   @override
@@ -245,9 +245,9 @@ class _mobiwalletwithdrawState extends State<mobiwalletwithdraw> {
               child: Padding(
                 padding: EdgeInsets.all(28.0),
                 child: Text('Enter your bank details',
-                  style: TextStyle(fontWeight: FontWeight.w500,
+                  style: TextStyle(fontWeight: FontWeight.bold,
                       fontSize: 22,
-                      color: Colors.black54),),
+                      color: Colors.black),),
               ),
             ),
             Center(
@@ -256,10 +256,8 @@ class _mobiwalletwithdrawState extends State<mobiwalletwithdraw> {
                 child: Row(
                   children: [
                     Text('Actual balance: ',
-                      style: TextStyle(fontWeight: FontWeight.w400,
-                          fontSize: 20,
-                          color: Colors.black54),),
-                    Text('\$$balance',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),),
+                    Text('\$${double.parse(balance).toStringAsFixed(2)}',
                       style: TextStyle(fontWeight: FontWeight.w400,
                           fontSize: 20,
                           color: Colors.black54),),
@@ -345,8 +343,16 @@ class _mobiwalletwithdrawState extends State<mobiwalletwithdraw> {
             ),
             SizedBox(height: 20,),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-              child: ElevatedButton(onPressed: () async{
+              padding: EdgeInsets.symmetric(horizontal: size.width * 0.2),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.0),
+                  gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF29C51F),
+                        Color(0x9D60AD43)]),
+                ),
+                child: ElevatedButton(onPressed: () async{
                 String time = DateFormat.yMd().format(DateTime.now()).toString();
                 if(_formkey.currentState!.validate()) {
                     if (amount > 19.9) {
@@ -391,15 +397,15 @@ class _mobiwalletwithdrawState extends State<mobiwalletwithdraw> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.lightGreen,
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                  elevation: 5,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(11.0),
                   child: Text("Submit", style: TextStyle(
                       fontSize: 20, color: Colors.white, fontWeight: FontWeight.w400),),
-                ),),
+                ),),)
             )
           ],
         ),

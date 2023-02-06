@@ -335,12 +335,7 @@ class _OrdersState extends State<Orders> {
                                                     child: Padding(
                                                       padding: const EdgeInsets
                                                           .all(10.0),
-                                                      child:initialQty == 0 ?
-                                                      Text('Balance: ${bal.toStringAsFixed(2)}',style: TextStyle(color: Colors.white),)
-                                                          : Text('Balance: \$${(bal - double.parse(products[selectedIndex][i].price)).toStringAsFixed(2)}',
-                                                        style: TextStyle(
-                                                            color: Colors
-                                                                .white),),
+                                                      child: Text('Balance: ${bal.toStringAsFixed(2)}',style: TextStyle(color: Colors.white),)
                                                     ),
                                                   ),
                                                   Container(
@@ -389,14 +384,14 @@ class _OrdersState extends State<Orders> {
                                                                 SizedBox(
                                                                   width: 35,
                                                                   child: TextButton(
-                                                                      onPressed: initialQty == 1? null : () {
-                                                                       if(initialQty > 1){
-
+                                                                      onPressed: initialQty == 0? null : () {
+                                                                       if(initialQty > 0){
                                                                          setState(() {
                                                                            bal += double.parse(products[selectedIndex][i].price);
                                                                           initialQty -= 1;
                                                                           total = initialQty * double.parse(products[selectedIndex][i].price);
-                                                                        });}else initialQty = 1;
+                                                                        });
+                                                                       }
                                                                       },
                                                                       child: const Text(
                                                                         '-',
@@ -410,7 +405,7 @@ class _OrdersState extends State<Orders> {
                                                                 SizedBox(
                                                                   width: 35,
                                                                   child: TextButton(
-                                                                      onPressed: bal - (double.parse(products[selectedIndex][i].price) * 2)<= 0 ? null : () {
+                                                                      onPressed: bal - (double.parse(products[selectedIndex][i].price))< 0 ? null : () {
                                                                           setState(() {
                                                                           bal -= double.parse(products[selectedIndex][i].price);
                                                                           initialQty += 1;
@@ -437,6 +432,7 @@ class _OrdersState extends State<Orders> {
                                                         ),
                                                         backgroundColor: MaterialStateColor.resolveWith((states) => Colors.lightGreen)),
                                                     onPressed: () async{
+                                                      if (initialQty > 0){
                                                       print("$initialQty, ${(double.parse(products[selectedIndex][i].earnings) * initialQty).toString()} ,${user
                                                           .email!} ,${products[selectedIndex][i].PID}, ${products[selectedIndex][i].name}, 'processing', "
                                                           "${double.parse(products[selectedIndex][i].price) * initialQty}, $uid");
@@ -445,7 +441,26 @@ class _OrdersState extends State<Orders> {
                                                           products[selectedIndex][i].PID, products[selectedIndex][i].name, 'processing',
                                                           double.parse(products[selectedIndex][i].price) * initialQty, uid);
 
-                                                      Navigator.pop(context);},
+                                                      Navigator.pop(context);}
+                                                      else {
+                                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                        elevation: 0,
+                                                        backgroundColor: Colors.transparent,
+                                                        content: Card(
+                                                            color: Colors.redAccent,
+                                                            child: Padding(
+                                                              padding: EdgeInsets.all(15.0),
+                                                              child: Row(
+                                                                children: [
+                                                                  Icon(Icons.dangerous_rounded),
+                                                                  Text('  Please select a valid quantity', style: TextStyle(
+                                                                      fontSize: size.width*.04, fontWeight: FontWeight.w600
+                                                                  ),),
+                                                                ],
+                                                              ),
+                                                            )),
+                                                      ));
+                                                      }},
                                                     child: Text("Confirm",
                                                       style: TextStyle(
                                                           fontSize: 16),),
@@ -676,12 +691,10 @@ class _OrdersState extends State<Orders> {
                                     color: Colors.redAccent,
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
-                                      child: initialQty == 0 ? Text(
+                                      child: Text(
                                           'Balance: ${bal.toStringAsFixed(2)}',style: TextStyle(
                                           color: Colors.white),
-                                      ) : Text(
-                                        'Balance: \$${(bal - double.parse(products[tier][i].price)).toStringAsFixed(2)}',
-                                        style: TextStyle(color: Colors.white),),
+                                      )
                                     ),
                                   ),
                                   Container(
@@ -749,12 +762,12 @@ class _OrdersState extends State<Orders> {
                                                   width: 35,
                                                   child: TextButton(
                                                       onPressed: initialQty == 0 ? null : () {
-                                                        if(initialQty > 1){
+                                                        if(initialQty > 0){
                                                           setState(() {
                                                             bal += double.parse(products[tier][i].price);
                                                             initialQty -= 1;
                                                             total = initialQty * double.parse(products[tier][i].price);
-                                                          });}else initialQty = 1;
+                                                          });}
                                                       },
                                                       child: const Text(
                                                         '-',
@@ -768,7 +781,7 @@ class _OrdersState extends State<Orders> {
                                                 SizedBox(
                                                   width: 35,
                                                   child: TextButton(
-                                                      onPressed: bal - (double.parse(products[tier][i].price) * 2)<= 0 ? null : () {
+                                                      onPressed: bal - (double.parse(products[tier][i].price)) < 0 ? null : () {
                                                         setState(() {
                                                           bal -= double.parse(products[tier][i].price);
                                                           initialQty += 1;
@@ -803,12 +816,46 @@ class _OrdersState extends State<Orders> {
                                             states) =>
                                         Colors.lightGreen)),
                                     onPressed: () async{
-                                      final user = FirebaseAuth.instance.currentUser!;
-                                      await DatabaseService(uid: uid)
-                                          .makeorder(initialQty, double.parse(products[tier][i].earnings) * initialQty ,user.email! ,
-                                          products[tier][i].PID, products[tier][i].name, 'processing',
-                                          double.parse(products[tier][i].price) * initialQty, uid);
-                                      Navigator.pop(context);
+                                      if(initialQty > 0){
+                                        final user = FirebaseAuth.instance.currentUser!;
+                                        await DatabaseService(uid: uid).makeorder(initialQty, double.parse(products[tier][i].earnings) * initialQty,
+                                            user.email!,
+                                            products[tier][i].PID,
+                                            products[tier][i].name,
+                                            'processing',
+                                            double.parse(
+                                                products[tier][i].price) *
+                                                initialQty,
+                                            uid);
+                                        Navigator.pop(context);
+                                      } else {
+                                        {
+                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                            elevation: 0,
+                                            backgroundColor: Colors.transparent,
+                                            content: Card(
+                                                color: Colors.redAccent,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(15.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Icon(Icons
+                                                          .dangerous_rounded),
+                                                      Text(
+                                                        '  Please select a valid quantity',
+                                                        style: TextStyle(
+                                                            fontSize: size
+                                                                .width *
+                                                                .04,
+                                                            fontWeight: FontWeight
+                                                                .w600
+                                                        ),),
+                                                    ],
+                                                  ),
+                                                )),
+                                          ));
+                                        }
+                                      }
                                     },
                                     child: Text("Confirm",
                                       style: TextStyle(

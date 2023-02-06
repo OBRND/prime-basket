@@ -13,13 +13,13 @@ class BuildAnimatedText extends StatefulWidget {
 class _BuildAnimatedTextState extends State<BuildAnimatedText> {
   // const BuildAnimatedText({Key? key}) : super(key: key);
   String text = 'f****o@gmail.com has deposited \$233';
-  late String textupdated = '';
+  late String textupdated = ' ';
   Future getproducts() async{
     final user = Provider.of<UserFB?>(context);
     final uid = user!.uid;
    final text =  await DatabaseService(uid: uid).getwithdrawalstext();
    setState(() {
-     textupdated = text;
+     textupdated += text;
    });
   }
   @override
@@ -35,9 +35,9 @@ class _BuildAnimatedTextState extends State<BuildAnimatedText> {
     return SizedBox(
       height: MediaQuery.of(context).size.height*0.04 ,
       child: Material(
-        color: Color(0xf0cccbcb),
+        color: Colors.white,
         child: Marquee(
-          text: textupdated.isEmpty ? text: textupdated,
+          text: textupdated,
           style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w400,fontSize: MediaQuery.of(context).size.width*0.04),
           blankSpace: 30,
         ),

@@ -63,17 +63,17 @@ class _BinancePageState extends State<BinancePage> {
           SizedBox(height: 20,),
           Padding(
             padding:EdgeInsets.symmetric(horizontal: size.width*0.03,vertical: size.height*0.01),
-            child: Text("1. Only use USDT", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+            child: Text("1. Only use USDT.", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
           ),
 
           Padding(
             padding:EdgeInsets.symmetric(horizontal: size.width*0.03,vertical: size.height*0.01),
-            child: Text("2. Only use BEP20  (Binance Smart Chain).", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+            child: Text("2. Only use BEP20 (Binance Smart Chain).", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
           ),
 
           Padding(
             padding:EdgeInsets.symmetric(horizontal: size.width*0.03,vertical: size.height*0.01),
-            child: Text("3. You can send directly via binance or metamask.", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
+            child: Text("3. You can send directly via Binance or Metamask.", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),),
           ),
 
           //Implement QR CODE SCANNER HERE.
@@ -106,6 +106,7 @@ class _BinancePageState extends State<BinancePage> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: size.width*0.02, vertical: size.height*0.03),
             child: TextField(
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: size.width*0.06),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
@@ -115,7 +116,7 @@ class _BinancePageState extends State<BinancePage> {
                     borderRadius: BorderRadius.circular(25)
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                hintText:'Enter transaction Hash', hintStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w400,)
+                hintText:'Transaction Hash', hintStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.w400,)
               ),
               onChanged: (val) async{
                 var error = await checkTransactionReceiptStatus(val, 3);
@@ -137,7 +138,16 @@ class _BinancePageState extends State<BinancePage> {
         ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            child: ElevatedButton(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.0),
+                gradient: const LinearGradient(
+                    colors: [
+                      Color(0xfff6ad16),
+                      Colors.amberAccent,
+                      ]),
+              ),
+              child: ElevatedButton(
               onPressed: () async{
               String error = await checkTransactionReceiptStatus(transactionHash, 1);
               print(error);
@@ -153,9 +163,9 @@ class _BinancePageState extends State<BinancePage> {
               });
             },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.amber,
+                backgroundColor: Colors.transparent,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                elevation: 5,
+                elevation: 0,
               ),
               // shape: RoundedRectangleBorder(
               //   borderRadius: BorderRadius.circular(25),
@@ -165,7 +175,7 @@ class _BinancePageState extends State<BinancePage> {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Text("Submit",style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w400),),
-              ),),
+              ),),)
           ),
           // Center(child: Text('$Error', style: TextStyle(fontSize: 25, fontWeight: FontWeight.w300, color: Colors.red),))
         ],

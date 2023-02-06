@@ -88,7 +88,15 @@ class _changePasswordState extends State<changePassword> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: size.width*0.15, vertical: size.height*0.05),
-              child: ElevatedButton(
+              child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25.0),
+                    gradient: const LinearGradient(
+                        colors: [
+                          Colors.green,
+                          Colors.lightGreen]),
+                  ),
+                  child: ElevatedButton(
                 onPressed: () async{
                   if(_formkey.currentState!.validate()){
                     // setState(() => loading = true);
@@ -105,20 +113,22 @@ class _changePasswordState extends State<changePassword> {
                     }
                   }
                 },
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                        )
-                    ),
-                    backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green)),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                ),
                 child: Center(
-                    child: Text("Confirm",
+                    child: Padding(
+                       padding: EdgeInsets.all(11),
+                        child: Text("Confirm",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
-                          fontSize: 22),)),
-              ),
+                          fontSize: 22),))),
+              )),
             ),
           ],
         ),

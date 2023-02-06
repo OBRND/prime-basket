@@ -17,7 +17,7 @@ class binancewithdraw extends StatefulWidget {
 }
 
 class _binancewithdrawState extends State<binancewithdraw> {
-  late String balance = '';
+  late String balance = '0';
   int amount = 0;
 
   @override
@@ -102,9 +102,7 @@ class _binancewithdrawState extends State<binancewithdraw> {
               child: Padding(
                 padding: EdgeInsets.all(30.0),
                 child: Text('Withdraw',
-                  style: TextStyle(fontWeight: FontWeight.w500,
-                      fontSize: 22,
-                      color: Colors.black54),),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black),),
               ),
             ),
             Center(
@@ -113,9 +111,7 @@ class _binancewithdrawState extends State<binancewithdraw> {
                 child: Row(
                   children: [
                     Text('Actual balance: ',
-                      style: TextStyle(fontWeight: FontWeight.w400,
-                          fontSize: 20,
-                          color: Colors.black54,),),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black,),),
                     Text(double.parse(balance).toStringAsFixed(2),
                       style: TextStyle(fontWeight: FontWeight.w400,
                           fontSize: 20,
@@ -139,8 +135,19 @@ class _binancewithdrawState extends State<binancewithdraw> {
             ),
             SizedBox(height: 20,),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-              child: MaterialButton(
+              padding: EdgeInsets.symmetric(horizontal: size.width * .2),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.0),
+                  gradient: const LinearGradient(
+                      colors: [
+                        Color(0xFF29C51F),
+                        Color(0x9D60AD43)]),
+                ),
+                child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent, elevation: 0,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0),),),
                 onPressed: () async{
                   if (_formkey.currentState!.validate()) {
                     if (amount > 19.9) {
@@ -187,15 +194,11 @@ class _binancewithdrawState extends State<binancewithdraw> {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar20);}
                   }
                 },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),),
-                elevation: 5,
-                color: Colors.lightGreen,
                 child: Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: Text("Submit", style: TextStyle(
                       fontSize: 20, color: Colors.white, fontWeight: FontWeight.w400),),
-                ),),
+                ),),)
             )
           ],
         ),

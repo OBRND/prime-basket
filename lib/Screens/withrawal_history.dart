@@ -50,23 +50,29 @@ class _WithdrawalhistoryPageState extends State<WithdrawalhistoryPage> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
         bottomNavigationBar: bottomtabwidget(),
-        appBar: AppBar(
-          iconTheme: const IconThemeData(
-              color: Colors.black
-          ),
-          elevation: 0,
-          backgroundColor: Color(0xffadacac),
-          title:  Center(
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Text("Withdrawal/Deposit History", style: TextStyle(fontWeight: FontWeight.w400,fontSize: 20, color: Colors.black),),
-            ),
-          ),
-        ),
+        // appBar: AppBar(
+        //   iconTheme: const IconThemeData(
+        //       color: Colors.black
+        //   ),
+        //   elevation: 0,
+        //   backgroundColor: Color(0xffadacac),
+        //   title:  Center(
+        //     child: Padding(
+        //       padding: const EdgeInsets.all(15.0),
+        //       child: Text("Withdrawal/Deposit History", style: TextStyle(fontWeight: FontWeight.w400,fontSize: 20, color: Colors.black),),
+        //     ),
+        //   ),
+        // ),
         body: RefreshIndicator(
           onRefresh: refreshedtrades,
           child: ListView(
           children: [
+          const Center(
+              child: Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Text("Withdrawal/Deposit History", style: TextStyle(fontWeight: FontWeight.w400,fontSize: 22, color: Colors.black),),
+              ),
+            ),
            FutureBuilder(
               future: getorders(context),
               builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -112,63 +118,26 @@ class _WithdrawalhistoryPageState extends State<WithdrawalhistoryPage> {
                                                         '\$${double.parse(snapshot.data[i].amount).toStringAsFixed(2)} ',
                                                         style: style.copyWith(
                                                             fontSize: 22,
-                                                            color: snapshot
-                                                                        .data[i]
-                                                                        .status ==
-                                                                    'processing'
-                                                                ? Colors.amber
-                                                                : snapshot
-                                                                            .data[
-                                                                                i]
-                                                                            .status ==
-                                                                        'Delivered'
-                                                                    ? Colors
-                                                                        .green
-                                                                    : Colors
-                                                                        .red,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700),
+                                                            color: snapshot.data[i].status == 'processing' ? Colors.amber : snapshot.data[i].status == 'Delivered' ? Colors.green : Colors.red,
+                                                            fontWeight: FontWeight.bold),
                                                       ),
                                                       Text(
-                                                        snapshot.data[i]
-                                                                    .status ==
-                                                                'processing'
-                                                            ? 'has been added to Est. earnings.'
-                                                            : snapshot.data[i]
-                                                                        .status ==
-                                                                    'Delivered'
-                                                                ? 'has been added to Actual Earnings'
+                                                        snapshot.data[i].status == 'processing' ? 'has been added to Est. earnings.'
+                                                            : snapshot.data[i].status == 'Delivered' ? 'has been added to Actual Earnings'
                                                                 : 'has been removed from Est. earnings',
-                                                        style: (snapshot.data[i]
-                                                                    .status ==
-                                                                'processing'
-                                                            ? style.copyWith(
-                                                                fontSize: 18,
-                                                                color: Colors
-                                                                    .amber,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400)
-                                                            : snapshot.data[i]
-                                                                        .status ==
-                                                                    'Delivered'
+                                                        style: (snapshot.data[i].status == 'processing' ? style.copyWith(fontSize: 18,
+                                                                color: Colors.amber,
+                                                                fontWeight: FontWeight.bold)
+                                                            : snapshot.data[i].status == 'Delivered'
                                                                 ? style.copyWith(
-                                                                    fontSize:
-                                                                        18,
-                                                                    color: Colors
-                                                                        .lightGreen,
+                                                                    fontSize: 18,
+                                                                    color: Colors.lightGreen,
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w400)
+                                                                        FontWeight.bold)
                                                                 : style.copyWith(
-                                                                    fontSize:
-                                                                        18,
-                                                                    color: Colors
-                                                                        .red,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400)),
+                                                                    fontSize: 18,
+                                                                    color: Colors.red,
+                                                                    fontWeight: FontWeight.bold)),
                                                       ),
                                                     ],
                                                   ),
@@ -204,30 +173,20 @@ class _WithdrawalhistoryPageState extends State<WithdrawalhistoryPage> {
                                                                 .center,
                                                         children: [
                                                           Text(
-                                                              'You have a top up of ',
-                                                              style: style.copyWith(
-                                                                  fontSize: 16,
-                                                                  color: Color(
-                                                                      0xff282727),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400)),
-                                                          Text(
                                                             '\$${double.parse(snapshot.data[i].amount).toStringAsFixed(2)}',
                                                             style: style.copyWith(
                                                                 fontSize: 22,
-                                                                color: Colors
-                                                                    .black87,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700),
+                                                                color: Colors.lightGreen,
+                                                                fontWeight: FontWeight.bold),
                                                           ),
+                                                          Text(
+                                                            ' has been deposited.',
+                                                            style: style.copyWith(
+                                                              fontSize: 22,
+                                                              color: Colors.lightGreen,
+                                                                fontWeight: FontWeight.bold),
+                                                          )
                                                         ],
-                                                      ),
-                                                      Text(
-                                                        ' on ${snapshot.data[i].time}',
-                                                        style: style.copyWith(
-                                                            fontSize: 15),
                                                       ),
                                                     ],
                                                   ),
@@ -264,8 +223,7 @@ class _WithdrawalhistoryPageState extends State<WithdrawalhistoryPage> {
                                                               color: Color(
                                                                   0xff282727),
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w400)),
+                                                                  FontWeight.bold)),
                                                       Text(
                                                         '\$${(snapshot.data[i].amount).toStringAsFixed(2)}',
                                                         style: style.copyWith(
@@ -273,8 +231,7 @@ class _WithdrawalhistoryPageState extends State<WithdrawalhistoryPage> {
                                                             color:
                                                                 Colors.black87,
                                                             fontWeight:
-                                                                FontWeight
-                                                                    .w700),
+                                                                FontWeight.bold),
                                                       ),
                                                     ],
                                                   ),
@@ -290,6 +247,8 @@ class _WithdrawalhistoryPageState extends State<WithdrawalhistoryPage> {
                                                   Text(
                                                     " on ${snapshot.data[i].time}",
                                                     style: style.copyWith(
+                                                      fontWeight: FontWeight.bold
+                                                        ,
                                                         fontSize: 15),
                                                   ),
                                                 ],

@@ -72,33 +72,55 @@ class _MobileWalletState extends State<MobileWallet> {
               ),
             ),
             SizedBox(height: size.height*0.03,),
-            Center(child: ElevatedButton(onPressed: (){
+            Center(child: Container(
+              height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.0),
+                  gradient: const LinearGradient(
+                      colors: [
+                        Colors.blueAccent,
+                        Colors.lightBlue]),
+                ),
+                child: ElevatedButton(onPressed: (){
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => trades(currency: selectedcurrency)));
             },
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                  elevation: 0,
+                    backgroundColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text("Apply",style: TextStyle(fontSize: 20, color: Colors.white,fontWeight: FontWeight.w400),),
-                ))),
+                )))
+            ),
             SizedBox(height: size.height*0.02,),
 
             Center(child: Text("OR", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
             SizedBox(height: size.height*0.02,),
 
-            Center(child: ElevatedButton(onPressed: (){
+            Center(child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.0),
+                  gradient: const LinearGradient(
+                      colors: [
+                        Colors.blueAccent,
+                        Colors.lightBlue]),
+                ),
+                child: ElevatedButton(onPressed: (){
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => trades(currency: 'Any',)));
             },
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
+                  elevation: 0,
+                    backgroundColor: Colors.transparent, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text("Show All Currencies",style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w400),),
                 )))
+            )
 
 
           ],
