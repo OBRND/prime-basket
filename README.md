@@ -1,16 +1,8 @@
 # primebasket
 
-A new Flutter project.
+A Flutter project for A client.
 
-## Getting Started
+This project is an update for an existing Prime basket application on Google Playstore.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Greately inspired from the previous version of the app, it was build from the ground up to further improve the system of the previous app.
+This was meant as an update to the previous prime basket app on playstore
